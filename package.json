@@ -1,25 +1,25 @@
 {
-  "name": "jsonjoy-builder",
+  "name": "jsonjoy-builder-vue",
   "license": "MIT",
   "description": "Visual JSON Schema editor for creating and manipulating JSON Schema definitions with an intuitive interface.",
   "author": {
-    "name": "Ophir LOJKINE",
-    "url": "http://ophir.dev/"
+    "name": "gcasotti",
+    "url": "https://github.com/gcasotti"
   },
   "keywords": [
     "json",
     "schema",
     "editor",
     "visual",
-    "react"
+    "vue"
   ],
   "private": false,
-  "version": "0.3.2",
+  "version": "0.4.0",
   "type": "module",
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lovasoa/jsonjoy-builder.git"
+    "url": "git+https://github.com/gcasotti/jsonjoy-builder-vue.git"
   },
   "files": [
     "dist",
@@ -28,10 +28,10 @@
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
-  "types": "./dist/jsonjoy-builder.d.ts",
+  "types": "./dist/jsonjoy-builder-vue.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/jsonjoy-builder.d.ts",
+      "types": "./dist/jsonjoy-builder-vue.d.ts",
       "import": "./dist/index.js",
       "module": "./dist/index.js",
       "default": "./dist/index.js"
@@ -52,61 +52,41 @@
     "format": "biome format . --write",
     "check": "biome check .",
     "fix": "biome check --fix --unsafe",
-    "typecheck": "tsc --build --force",
-    "test": "tsx --tsconfig tsconfig.test.json --test test/**/*.test.{js,ts,tsx}",
-    "test:snapshots": "tsx --test-update-snapshots --tsconfig tsconfig.test.json --test test/**/*.test.{js,ts,tsx}",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "tsx --tsconfig tsconfig.test.json --test test/**/*.test.{js,ts}",
+    "test:snapshots": "tsx --test-update-snapshots --tsconfig tsconfig.test.json --test test/**/*.test.{js,ts}",
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@monaco-editor/react": "^4.7.0",
-    "@radix-ui/react-checkbox": "^1.3.3",
-    "@radix-ui/react-dialog": "^1.1.15",
-    "@radix-ui/react-label": "^2.1.7",
-    "@radix-ui/react-popover": "^1.1.15",
-    "@radix-ui/react-select": "^2.2.6",
-    "@radix-ui/react-separator": "^1.1.7",
-    "@radix-ui/react-slot": "^1.2.3",
-    "@radix-ui/react-switch": "^1.2.6",
-    "@radix-ui/react-tabs": "^1.1.13",
-    "@radix-ui/react-toast": "^1.2.15",
-    "@radix-ui/react-tooltip": "^1.2.8",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.562.0",
+    "monaco-editor": "^0.55.1",
+    "primevue": "^4.3.0",
+    "@primevue/themes": "^4.3.0",
+    "primeicons": "^7.0.0",
+    "lucide-vue-next": "^0.562.0",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.0.17"
   },
   "peerDependencies": {
-    "monaco-editor": ">= 0.25.0 < 1",
-    "react": ">=19.0.0",
-    "react-dom": ">=19.0.0"
+    "vue": ">=3.4.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
     "@microsoft/api-extractor": "^7.52.11",
     "@rsbuild/core": "^1.4.15",
-    "@rsbuild/plugin-react": "^1.3.5",
+    "@rsbuild/plugin-vue": "^1.0.0",
     "@rslib/core": "^0.19.0",
     "@tailwindcss/postcss": "^4.1.12",
-    "@tanstack/react-query": "^5.85.0",
-    "@testing-library/react": "^16.3.0",
     "@types/node": "^25.0.3",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "global-jsdom": "^27.0.0",
-    "monaco-editor": "^0.55.1",
-    "next-themes": "^0.4.6",
     "postcss": "^8.5.6",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-router-dom": "^7.8.1",
-    "sonner": "^2.0.7",
     "tailwindcss": "^4.1.12",
-    "tailwindcss-animate": "^1.0.7",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0",
+    "vue-tsc": "^2.2.0"
   },
   "packageManager": "npm@10.9.3+sha512.e84875bb943e908557780f1eee5d9cfc7a67145730ae4b77ef10ccba30f96ded6096859af69ea3dc5b2fde60725d79aa247cbed9c12544c30bf28a4d4fbc4825"
 }

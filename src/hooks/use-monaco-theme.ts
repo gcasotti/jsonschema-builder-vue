@@ -1,7 +1,7 @@
 import type * as Monaco from "monaco-editor";
 import type { json as MonacoJson } from "monaco-editor";
 import * as MonacoModule from "monaco-editor";
-import { useEffect, useState } from "react";
+import { onMounted, onUnmounted, ref } from "vue";
 import type { JSONSchema } from "../types/jsonSchema.ts";
 
 export interface MonacoEditorOptions {
@@ -23,15 +23,15 @@ export interface MonacoEditorOptions {
   renderLineHighlight?: "all" | "line" | "none" | "gutter";
   matchBrackets?: "always" | "near" | "never";
   autoClosingBrackets?:
-    | "always"
-    | "languageDefined"
-    | "beforeWhitespace"
-    | "never";
+  | "always"
+  | "languageDefined"
+  | "beforeWhitespace"
+  | "never";
   autoClosingQuotes?:
-    | "always"
-    | "languageDefined"
-    | "beforeWhitespace"
-    | "never";
+  | "always"
+  | "languageDefined"
+  | "beforeWhitespace"
+  | "never";
   guides?: {
     bracketPairs?: boolean;
     indentation?: boolean;
@@ -65,107 +65,96 @@ export const defaultEditorOptions: MonacoEditorOptions = {
 };
 
 export function useMonacoTheme() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const isDarkMode = ref(false);
 
-  // Check for dark mode by examining CSS variables
-  useEffect(() => {
-    const checkDarkMode = () => {
-      // Get the current background color value
-      const backgroundColor = getComputedStyle(document.documentElement)
-        .getPropertyValue("--background")
-        .trim();
+  let observer: MutationObserver | null = null;
 
-      // If the background color HSL has a low lightness value, it's likely dark mode
-      const isDark =
-        backgroundColor.includes("222.2") ||
-        backgroundColor.includes("84% 4.9%");
+  const checkDarkMode = () => {
+    const backgroundColor = getComputedStyle(document.documentElement)
+      .getPropertyValue("--background")
+      .trim();
 
-      setIsDarkMode(isDark);
-    };
+    isDarkMode.value =
+      backgroundColor.includes("222.2") ||
+      backgroundColor.includes("84% 4.9%");
+  };
 
-    // Check initially
+  onMounted(() => {
     checkDarkMode();
 
-    // Set up a mutation observer to detect theme changes
-    const observer = new MutationObserver(checkDarkMode);
+    observer = new MutationObserver(checkDarkMode);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class", "style"],
     });
+  });
 
-    return () => observer.disconnect();
-  }, []);
+  onUnmounted(() => {
+    observer?.disconnect();
+  });
 
   const defineMonacoThemes = (monaco: typeof Monaco) => {
-    // Define custom light theme that matches app colors
     monaco.editor.defineTheme("appLightTheme", {
       base: "vs",
       inherit: true,
       rules: [
-        // JSON syntax highlighting based on utils.ts type colors
-        { token: "string", foreground: "3B82F6" }, // text-blue-500
-        { token: "number", foreground: "A855F7" }, // text-purple-500
-        { token: "keyword", foreground: "3B82F6" }, // text-blue-500
-        { token: "delimiter", foreground: "0F172A" }, // text-slate-900
-        { token: "keyword.json", foreground: "A855F7" }, // text-purple-500
-        { token: "string.key.json", foreground: "2563EB" }, // text-blue-600
-        { token: "string.value.json", foreground: "3B82F6" }, // text-blue-500
-        { token: "boolean", foreground: "22C55E" }, // text-green-500
-        { token: "null", foreground: "64748B" }, // text-gray-500
+        { token: "string", foreground: "3B82F6" },
+        { token: "number", foreground: "A855F7" },
+        { token: "keyword", foreground: "3B82F6" },
+        { token: "delimiter", foreground: "0F172A" },
+        { token: "keyword.json", foreground: "A855F7" },
+        { token: "string.key.json", foreground: "2563EB" },
+        { token: "string.value.json", foreground: "3B82F6" },
+        { token: "boolean", foreground: "22C55E" },
+        { token: "null", foreground: "64748B" },
       ],
       colors: {
-        // Light theme colors (using hex values instead of CSS variables)
-        "editor.background": "#f8fafc", // --background
-        "editor.foreground": "#0f172a", // --foreground
-        "editorCursor.foreground": "#0f172a", // --foreground
-        "editor.lineHighlightBackground": "#f1f5f9", // --muted
-        "editorLineNumber.foreground": "#64748b", // --muted-foreground
-        "editor.selectionBackground": "#e2e8f0", // --accent
-        "editor.inactiveSelectionBackground": "#e2e8f0", // --accent
-        "editorIndentGuide.background": "#e2e8f0", // --border
-        "editor.findMatchBackground": "#cbd5e1", // --accent
-        "editor.findMatchHighlightBackground": "#cbd5e133", // --accent with opacity
+        "editor.background": "#f8fafc",
+        "editor.foreground": "#0f172a",
+        "editorCursor.foreground": "#0f172a",
+        "editor.lineHighlightBackground": "#f1f5f9",
+        "editorLineNumber.foreground": "#64748b",
+        "editor.selectionBackground": "#e2e8f0",
+        "editor.inactiveSelectionBackground": "#e2e8f0",
+        "editorIndentGuide.background": "#e2e8f0",
+        "editor.findMatchBackground": "#cbd5e1",
+        "editor.findMatchHighlightBackground": "#cbd5e133",
       },
     });
 
-    // Define custom dark theme that matches app colors
     monaco.editor.defineTheme("appDarkTheme", {
       base: "vs-dark",
       inherit: true,
       rules: [
-        // JSON syntax highlighting based on utils.ts type colors
-        { token: "string", foreground: "3B82F6" }, // text-blue-500
-        { token: "number", foreground: "A855F7" }, // text-purple-500
-        { token: "keyword", foreground: "3B82F6" }, // text-blue-500
-        { token: "delimiter", foreground: "F8FAFC" }, // text-slate-50
-        { token: "keyword.json", foreground: "A855F7" }, // text-purple-500
-        { token: "string.key.json", foreground: "60A5FA" }, // text-blue-400
-        { token: "string.value.json", foreground: "3B82F6" }, // text-blue-500
-        { token: "boolean", foreground: "22C55E" }, // text-green-500
-        { token: "null", foreground: "94A3B8" }, // text-gray-400
+        { token: "string", foreground: "3B82F6" },
+        { token: "number", foreground: "A855F7" },
+        { token: "keyword", foreground: "3B82F6" },
+        { token: "delimiter", foreground: "F8FAFC" },
+        { token: "keyword.json", foreground: "A855F7" },
+        { token: "string.key.json", foreground: "60A5FA" },
+        { token: "string.value.json", foreground: "3B82F6" },
+        { token: "boolean", foreground: "22C55E" },
+        { token: "null", foreground: "94A3B8" },
       ],
       colors: {
-        // Dark theme colors (using hex values instead of CSS variables)
-        "editor.background": "#0f172a", // --background
-        "editor.foreground": "#f8fafc", // --foreground
-        "editorCursor.foreground": "#f8fafc", // --foreground
-        "editor.lineHighlightBackground": "#1e293b", // --muted
-        "editorLineNumber.foreground": "#64748b", // --muted-foreground
-        "editor.selectionBackground": "#334155", // --accent
-        "editor.inactiveSelectionBackground": "#334155", // --accent
-        "editorIndentGuide.background": "#1e293b", // --border
-        "editor.findMatchBackground": "#475569", // --accent
-        "editor.findMatchHighlightBackground": "#47556933", // --accent with opacity
+        "editor.background": "#0f172a",
+        "editor.foreground": "#f8fafc",
+        "editorCursor.foreground": "#f8fafc",
+        "editor.lineHighlightBackground": "#1e293b",
+        "editorLineNumber.foreground": "#64748b",
+        "editor.selectionBackground": "#334155",
+        "editor.inactiveSelectionBackground": "#334155",
+        "editorIndentGuide.background": "#1e293b",
+        "editor.findMatchBackground": "#475569",
+        "editor.findMatchHighlightBackground": "#47556933",
       },
     });
   };
 
-  // Helper to configure JSON language validation
   const configureJsonDefaults = (
     _monaco?: typeof Monaco,
     schema?: JSONSchema,
   ) => {
-    // Create a new diagnostics options object
     const diagnosticsOptions: MonacoJson.DiagnosticsOptions = {
       validate: true,
       allowComments: false,
@@ -173,26 +162,26 @@ export function useMonacoTheme() {
       enableSchemaRequest: true,
       schemas: schema
         ? [
-            {
-              uri:
-                typeof schema === "object" && schema.$id
-                  ? schema.$id
-                  : "https://jsonjoy-builder/schema",
-              fileMatch: ["*"],
-              schema,
-            },
-          ]
+          {
+            uri:
+              typeof schema === "object" && schema.$id
+                ? schema.$id
+                : "https://jsonjoy-builder/schema",
+            fileMatch: ["*"],
+            schema,
+          },
+        ]
         : [
-            {
-              uri: "http://json-schema.org/draft-07/schema",
-              fileMatch: ["*"],
-              schema: {
-                $schema: "http://json-schema.org/draft-07/schema",
-                type: "object",
-                additionalProperties: true,
-              },
+          {
+            uri: "http://json-schema.org/draft-07/schema",
+            fileMatch: ["*"],
+            schema: {
+              $schema: "http://json-schema.org/draft-07/schema",
+              type: "object",
+              additionalProperties: true,
             },
-          ],
+          },
+        ],
     };
 
     MonacoModule.json.jsonDefaults.setDiagnosticsOptions(diagnosticsOptions);
@@ -200,7 +189,7 @@ export function useMonacoTheme() {
 
   return {
     isDarkMode,
-    currentTheme: isDarkMode ? "appDarkTheme" : "appLightTheme",
+    currentTheme: () => (isDarkMode.value ? "appDarkTheme" : "appLightTheme"),
     defineMonacoThemes,
     configureJsonDefaults,
     defaultEditorOptions,

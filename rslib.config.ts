@@ -1,8 +1,8 @@
-import { pluginReact } from "@rsbuild/plugin-react";
+import { pluginVue } from "@rsbuild/plugin-vue";
 import { defineConfig } from "@rslib/core";
 
 export default defineConfig({
-  plugins: [pluginReact()],
+  plugins: [pluginVue()],
   source: {
     entry: {
       index: ["./src/**"],

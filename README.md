@@ -1,14 +1,16 @@
-# JSON Schema Builder
+# JSON Schema Builder (Vue)
 
-[![image](https://github.com/user-attachments/assets/6be1cecf-e0d9-4597-ab04-7124e37e332d)](https://json.ophir.dev)
+[![image](https://github.com/user-attachments/assets/6be1cecf-e0d9-4597-ab04-7124e37e332d)](https://github.com/gcasotti/jsonjoy-builder-vue)
 
-A modern, React-based visual JSON Schema editor for creating and manipulating JSON Schema definitions with an intuitive interface.
+A modern, Vue 3 + PrimeVue visual JSON Schema editor for creating and manipulating JSON Schema definitions with an intuitive interface.
 
-**Try online**: https://json.ophir.dev
+> **Note**: This project is a fork of [jsonjoy-builder](https://github.com/lovasoa/jsonjoy-builder) by [Ophir LOJKINE](https://ophir.dev), rewritten from React to Vue 3 + PrimeVue.
 
-[![NPM Downloads](https://img.shields.io/npm/dw/jsonjoy-builder)](https://www.npmjs.com/package/jsonjoy-builder)
-[![NPM Version](https://img.shields.io/npm/v/jsonjoy-builder)](https://www.npmjs.com/package/jsonjoy-builder)
-[![NPM License](https://img.shields.io/npm/l/jsonjoy-builder)](https://www.npmjs.com/package/jsonjoy-builder)
+**Repository**: https://github.com/gcasotti/jsonjoy-builder-vue
+
+[![NPM Downloads](https://img.shields.io/npm/dw/jsonjoy-builder-vue)](https://www.npmjs.com/package/jsonjoy-builder-vue)
+[![NPM Version](https://img.shields.io/npm/v/jsonjoy-builder-vue)](https://www.npmjs.com/package/jsonjoy-builder-vue)
+[![NPM License](https://img.shields.io/npm/l/jsonjoy-builder-vue)](https://www.npmjs.com/package/jsonjoy-builder-vue)
 
 ## Features
 
@@ -23,27 +25,28 @@ A modern, React-based visual JSON Schema editor for creating and manipulating JS
 ### Installing
 
 ```bash
-npm install jsonjoy-builder
+npm install jsonjoy-builder-vue
 ```
 
-Also install react if you haven't done so yet.
+Also install vue if you haven't done so yet.
 
 Then use like this:
 
-```jsx
-import "jsonjoy-builder/styles.css";
-import { type JSONSchema, SchemaVisualEditor } from "jsonjoy-builder";
-import { useState } from "react";
+```vue
+<script setup lang="ts">
+import "jsonjoy-builder-vue/styles.css";
+import { type JSONSchema, SchemaVisualEditor } from "jsonjoy-builder-vue";
+import { ref } from "vue";
 
-export function App() {
-  const [schema, setSchema] = useState<JSONSchema>({});
-  return (
-    <div>
-      <h1>JSONJoy Builder</h1>
-      <SchemaVisualEditor schema={schema} onChange={setSchema}/>
-    </div>
-  );
-}
+const schema = ref<JSONSchema>({});
+</script>
+
+<template>
+  <div>
+    <h1>JSONJoy Builder</h1>
+    <SchemaVisualEditor :schema="schema" @change="schema = $event" />
+  </div>
+</template>
 ```
 
 ### Styling
@@ -82,41 +85,41 @@ you can set:
 
 ### Localization
 
-By default, the editor uses English. To localize, you need to set a language via the `TranslationContext`:
+By default, the editor uses English. To localize, use `provideTranslation` in a parent component:
 
-```jsx
-import "jsonjoy-builder/styles.css";
-import { type JSONSchema, SchemaVisualEditor, TranslationContext, de } from "jsonjoy-builder";
-import { useState } from "react";
+```vue
+<script setup lang="ts">
+import "jsonjoy-builder-vue/styles.css";
+import { type JSONSchema, SchemaVisualEditor, provideTranslation, de } from "jsonjoy-builder-vue";
+import { ref } from "vue";
 
-export function App() {
-  const [schema, setSchema] = useState<JSONSchema>({});
-  return (
-    <TranslationContext value={de}>
-      <SchemaVisualEditor schema={schema} onChange={setSchema}/>
-    </TranslationContext>
-  );
-}
+const schema = ref<JSONSchema>({});
+provideTranslation(de);
+</script>
+
+<template>
+  <SchemaVisualEditor :schema="schema" @change="schema = $event" />
+</template>
 ```
 
 Currently we have localizations for English, German, French, Russian, Ukrainian, Spanish and Chinese. You can define your own translation like this.
 If you do, consider opening a PR with the translations!
 
 ```ts
-import { type Translation } from "jsonjoy-builder";
+import { type Translation } from "jsonjoy-builder-vue";
 
 const es: Translation = {
 	// add translations here (see type Translation for the available keys and default values)
 };
 ```
 
-See also the [English localizations file](https://github.com/lovasoa/jsonjoy-builder/blob/main/src/i18n/locales/en.ts) for the default localizations.
+See also the [English localizations file](https://github.com/gcasotti/jsonjoy-builder-vue/blob/main/src/i18n/locales/en.ts) for the default localizations.
 
 ### Development
 
 ```bash
-git clone https://github.com/lovasoa/jsonjoy-builder.git
-cd jsonjoy-builder
+git clone https://github.com/gcasotti/jsonjoy-builder-vue.git
+cd jsonjoy-builder-vue
 npm install
 ```
 
@@ -169,14 +172,14 @@ Validate any JSON document against your schema with:
 
 ## Technology Stack
 
-- **React**: UI framework
+- **Vue 3**: UI framework (Composition API, `<script setup>`)
+- **PrimeVue**: Component library (Aura theme)
 - **TypeScript**: Type-safe development
 - **Rsbuild** / **Rslib**: Build tool and development server
-- **ShadCN UI**: Component library
 - **Monaco Editor**: Code editor for JSON viewing/editing
 - **Ajv**: JSON Schema validation
 - **Zod**: Type-safe json parsing in ts
-- **Lucide Icons**: Icon library
+- **Lucide Vue Next**: Icon library
 - **Node.js Test Runner**: Simple built-in testing
 
 ## Development Scripts
@@ -200,4 +203,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Author
 
-[@ophir.dev](https://ophir.dev)
+[@gcasotti](https://github.com/gcasotti)
+
+## Acknowledgements
+
+This project is a Vue 3 port of [jsonjoy-builder](https://github.com/lovasoa/jsonjoy-builder), originally created by [Ophir LOJKINE (@lovasoa)](https://ophir.dev). Thanks for the excellent work on the original project!

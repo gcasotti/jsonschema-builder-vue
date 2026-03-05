@@ -1,11 +1,11 @@
 import path from "node:path";
 import { defineConfig, loadEnv } from "@rsbuild/core";
-import { pluginReact } from "@rsbuild/plugin-react";
+import { pluginVue } from "@rsbuild/plugin-vue";
 
 const { publicVars } = loadEnv({ prefixes: ["PUBLIC_", "VITE_"] });
 
 export default defineConfig({
-  plugins: [pluginReact()],
+  plugins: [pluginVue()],
   server: {
     host: "::",
     port: 8080,
@@ -17,7 +17,7 @@ export default defineConfig({
   },
   source: {
     entry: {
-      index: "./demo/main.tsx",
+      index: "./demo/main.ts",
     },
     define: {
       ...publicVars,

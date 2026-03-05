@@ -1,35 +1,21 @@
-// exports for public API
+// Vue components
+export { default as JsonSchemaEditor } from "./components/SchemaEditor/JsonSchemaEditor.vue";
+export { default as JsonSchemaVisualizer } from "./components/SchemaEditor/JsonSchemaVisualizer.vue";
+export { default as SchemaVisualEditor } from "./components/SchemaEditor/SchemaVisualEditor.vue";
+export { default as JsonValidator } from "./components/features/JsonValidator.vue";
+export { default as SchemaInferencer } from "./components/features/SchemaInferencer.vue";
 
-import JsonSchemaEditor, {
-  type JsonSchemaEditorProps,
-} from "./components/SchemaEditor/JsonSchemaEditor.tsx";
-import JsonSchemaVisualizer, {
-  type JsonSchemaVisualizerProps,
-} from "./components/SchemaEditor/JsonSchemaVisualizer.tsx";
-import SchemaVisualEditor, {
-  type SchemaVisualEditorProps,
-} from "./components/SchemaEditor/SchemaVisualEditor.tsx";
+// Composables
+export { useTranslation, provideTranslation, TranslationKey } from "./i18n/translation-context.ts";
+export { useMonacoTheme } from "./hooks/use-monaco-theme.ts";
 
-export * from "./components/features/JsonValidator.tsx";
-export * from "./components/features/SchemaInferencer.tsx";
-export * from "./i18n/locales/de.ts";
-export * from "./i18n/locales/en.ts";
-export * from "./i18n/locales/es.ts";
-export * from "./i18n/locales/fr.ts";
-export * from "./i18n/locales/pl.ts";
-export * from "./i18n/locales/ru.ts";
-export * from "./i18n/locales/uk.ts";
-export * from "./i18n/locales/zh.ts";
-export * from "./i18n/translation-context.ts";
-export * from "./i18n/translation-keys.ts";
+// Types
+export type { JSONSchema, ObjectJSONSchema, SchemaType, NewField } from "./types/jsonSchema.ts";
+export type { Translation } from "./i18n/translation-keys.ts";
 
-export {
-  JsonSchemaEditor,
-  type JsonSchemaEditorProps,
-  JsonSchemaVisualizer,
-  type JsonSchemaVisualizerProps,
-  SchemaVisualEditor,
-  type SchemaVisualEditorProps,
-};
+// i18n
+export { en } from "./i18n/locales/en.ts";
 
-export type { baseSchema, JSONSchema } from "./types/jsonSchema.ts";
+// Utilities
+export { createSchemaFromJson, inferSchema } from "./lib/schema-inference.ts";
+export { validateJson } from "./utils/jsonValidator.ts";

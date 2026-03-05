@@ -6,5 +6,9 @@
     "outDir": "../dist",
     "types": []
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": [
+    "**/*.ts",
+    "**/*.vue",
+    "env.d.ts"
+  ]
 }
