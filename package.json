@@ -1,7 +1,7 @@
 {
   "name": "jsonschema-builder-vue",
   "license": "MIT",
-  "description": "Visual JSON Schema editor for creating and manipulating JSON Schema definitions with an intuitive interface.",
+  "description": "Vue 3 Visual JSON Schema editor for creating and manipulating JSON Schema definitions with an intuitive interface.",
   "author": {
     "name": "gcasotti",
     "url": "https://github.com/gcasotti"
@@ -14,7 +14,7 @@
     "vue"
   ],
   "private": false,
-  "version": "0.4.2",
+  "version": "0.4.3",
   "type": "module",
   "sideEffects": false,
   "repository": {
