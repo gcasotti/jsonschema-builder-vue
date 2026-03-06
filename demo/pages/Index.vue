@@ -266,7 +266,7 @@ lang.value = de  // all labels update instantly`,
     <header class="relative overflow-hidden border-b border-border/30">
       <div class="absolute inset-0 pointer-events-none"
            style="background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59,130,246,.08), transparent)" />
-      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <div class="flex items-center gap-3 mb-4">
           <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
             <Code2 :size="20" class="text-white" />
@@ -292,7 +292,7 @@ lang.value = de  // all labels update instantly`,
       </div>
     </header>
 
-    <div class="flex max-w-[1400px] mx-auto">
+    <div class="flex max-w-[1800px] mx-auto">
 
       <!-- ───────── Sidebar ───────── -->
       <button type="button" class="fixed bottom-4 right-4 z-30 lg:hidden p-3 rounded-full bg-gray-900 text-white shadow-xl" @click="mobileNav = !mobileNav">
@@ -302,7 +302,7 @@ lang.value = de  // all labels update instantly`,
 
       <aside :class="[
         'shrink-0 bg-white/60 backdrop-blur-md border-r border-border/30 overflow-y-auto',
-        'fixed inset-y-0 left-0 z-20 w-60 pt-4 transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:w-56',
+        'fixed inset-y-0 left-0 z-20 w-64 pt-4 transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:w-64',
         mobileNav ? 'translate-x-0' : '-translate-x-full'
       ]">
         <nav class="px-3 pb-6 space-y-1 text-[13px]">
@@ -337,7 +337,7 @@ lang.value = de  // all labels update instantly`,
 
       <!-- ───────── Content ───────── -->
       <main class="grow min-w-0 overflow-y-auto">
-        <div class="max-w-4xl mx-auto px-4 sm:px-8 py-8 space-y-16">
+        <div class="w-full px-6 sm:px-10 lg:px-14 py-8 space-y-16">
 
           <!-- ╔══════════════════════════════╗ -->
           <!-- ║     JsonSchemaEditor          ║ -->
