@@ -21,7 +21,7 @@ A modern, Vue 3 + PrimeVue visual JSON Schema editor for creating and manipulati
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/jsonschema-builder-vue?v=1)](https://bundlephobia.com/package/jsonschema-builder-vue)
 [![Types](https://img.shields.io/npm/types/jsonschema-builder-vue?v=1)](https://www.npmjs.com/package/jsonschema-builder-vue)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/gcasotti/jsonjoy-builder-vue/ci.yml?v=1)](https://github.com/gcasotti/jsonjoy-builder-vue/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/gcasotti/jsonjoy-builder-vue/test.yml?v=1)](https://github.com/gcasotti/jsonjoy-builder-vue/actions)
 
 [![Demo](https://img.shields.io/badge/demo-live-blue?v=1)](https://gcasotti.github.io/jsonjoy-builder-vue/)
 
