@@ -44,7 +44,6 @@ const schema = ref<JSONSchema>({});
 
 <template>
   <div>
-    <h1>JSONJoy Builder</h1>
     <SchemaVisualEditor :schema="schema" @change="schema = $event" />
   </div>
 </template>
@@ -91,11 +90,13 @@ By default, the editor uses English. To localize, use `provideTranslation` in a 
 ```vue
 <script setup lang="ts">
 import "jsonschema-builder-vue/styles.css";
-import { type JSONSchema, SchemaVisualEditor, provideTranslation, de } from "jsonschema-builder-vue";
+import { type JSONSchema, SchemaVisualEditor, provideTranslation } from "jsonschema-builder-vue";
+import { de } from "jsonschema-builder-vue/i18n/locales/de";
 import { ref } from "vue";
 
+const lang = ref(de);
+provideTranslation(lang);
 const schema = ref<JSONSchema>({});
-provideTranslation(de);
 </script>
 
 <template>
@@ -103,7 +104,7 @@ provideTranslation(de);
 </template>
 ```
 
-Currently we have localizations for English, German, French, Russian, Ukrainian, Spanish and Chinese. You can define your own translation like this.
+Currently we have localizations for English, German, French, Italian, Polish, Russian, Ukrainian, Spanish and Chinese. You can define your own translation like this.
 If you do, consider opening a PR with the translations!
 
 ```ts
@@ -130,7 +131,7 @@ Start the development server:
 npm run dev
 ```
 
-The demo application will be available at http://localhost:5173
+The demo application will be available at http://localhost:8080
 
 ### Building for Production
 
@@ -181,22 +182,24 @@ Validate any JSON document against your schema with:
 - **Ajv**: JSON Schema validation
 - **Zod**: Type-safe json parsing in ts
 - **Lucide Vue Next**: Icon library
-- **Node.js Test Runner**: Simple built-in testing
+- **Vitest**: Unit and component testing
 
 ## Development Scripts
 
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run build:dev` | Build with development settings |
-| `npm run lint` | Run linter |
-| `npm run format` | Format code |
-| `npm run check` | Type check the project |
-| `npm run fix` | Fix linting issues |
-| `npm run typecheck` | Type check with TypeScript |
+| `npm run build` | Build library for production |
+| `npm run build:demo` | Build demo page |
+| `npm run lint` | Run Biome linter |
+| `npm run format` | Format code with Biome |
+| `npm run check` | Run Biome lint + format checks |
+| `npm run fix` | Auto-fix lint issues |
+| `npm run typecheck` | Type check with vue-tsc |
 | `npm run preview` | Preview production build |
-| `npm run test` | Run tests |
+| `npm run test` | Run unit tests |
+| `npm run test:ui` | Run component tests (Vitest) |
+| `npm run test:all` | Run all tests |
 
 ## License
 
