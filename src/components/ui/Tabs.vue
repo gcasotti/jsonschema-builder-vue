@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Tabs from "primevue/tabs";
-import TabList from "primevue/tablist";
 import Tab from "primevue/tab";
-import TabPanels from "primevue/tabpanels";
+import TabList from "primevue/tablist";
 import TabPanel from "primevue/tabpanel";
+import TabPanels from "primevue/tabpanels";
+import Tabs from "primevue/tabs";
 
 const model = defineModel<string>();
 

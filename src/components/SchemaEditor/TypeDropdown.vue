@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Check, ChevronDown } from "lucide-vue-next";
-import { ref, onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useTranslation } from "../../hooks/use-translation.ts";
 import { cn, getTypeColor, getTypeLabel } from "../../lib/utils.ts";
 import type { SchemaType } from "../../types/jsonSchema.ts";

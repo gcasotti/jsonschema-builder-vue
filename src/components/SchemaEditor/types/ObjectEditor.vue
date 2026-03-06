@@ -5,10 +5,10 @@ import { useSchemaStore } from "../../../hooks/useSchemaStore.ts";
 import { getSchemaProperties } from "../../../lib/schemaEditor.ts";
 import type { NewField, ObjectJSONSchema } from "../../../types/jsonSchema.ts";
 import { isBooleanSchema, isObjectSchema } from "../../../types/jsonSchema.ts";
+import type { ValidationTreeNode } from "../../../types/validation.ts";
 import ButtonToggle from "../../ui/ButtonToggle.vue";
 import AddFieldButton from "../AddFieldButton.vue";
 import SchemaPropertyEditor from "../SchemaPropertyEditor.vue";
-import type { ValidationTreeNode } from "../../../types/validation.ts";
 
 const props = withDefaults(
   defineProps<{

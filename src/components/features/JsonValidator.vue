@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { CheckCircle, Loader2, XCircle } from "lucide-vue-next";
-import { ref, watch, computed } from "vue";
+import { computed, ref, watch } from "vue";
 import Button from "../../components/ui/Button.vue";
 import Dialog from "../../components/ui/Dialog.vue";
-import MonacoEditor from "../../components/ui/MonacoEditor.vue";
+import type MonacoEditor from "../../components/ui/MonacoEditor.vue";
 import { useTranslation } from "../../hooks/use-translation.ts";
 import type { JSONSchema } from "../../types/jsonSchema.ts";
 import {
-  validateJson,
   type ValidationResult,
+  validateJson,
 } from "../../utils/jsonValidator.ts";
 
 const props = withDefaults(

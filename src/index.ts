@@ -1,30 +1,27 @@
 // Vue components
+
+export { default as JsonValidator } from "./components/features/JsonValidator.vue";
+export { default as SchemaInferencer } from "./components/features/SchemaInferencer.vue";
 export { default as JsonSchemaEditor } from "./components/SchemaEditor/JsonSchemaEditor.vue";
 export { default as JsonSchemaVisualizer } from "./components/SchemaEditor/JsonSchemaVisualizer.vue";
 export { default as SchemaVisualEditor } from "./components/SchemaEditor/SchemaVisualEditor.vue";
-export { default as JsonValidator } from "./components/features/JsonValidator.vue";
-export { default as SchemaInferencer } from "./components/features/SchemaInferencer.vue";
-
+export { useMonacoTheme } from "./hooks/use-monaco-theme.ts";
+// i18n
+export { en } from "./i18n/locales/en.ts";
 // Composables
 export {
-  useTranslation,
   provideTranslation,
   TranslationKey,
+  useTranslation,
 } from "./i18n/translation-context.ts";
-export { useMonacoTheme } from "./hooks/use-monaco-theme.ts";
-
+export type { Translation } from "./i18n/translation-keys.ts";
+// Utilities
+export { createSchemaFromJson, inferSchema } from "./lib/schema-inference.ts";
 // Types
 export type {
   JSONSchema,
+  NewField,
   ObjectJSONSchema,
   SchemaType,
-  NewField,
 } from "./types/jsonSchema.ts";
-export type { Translation } from "./i18n/translation-keys.ts";
-
-// i18n
-export { en } from "./i18n/locales/en.ts";
-
-// Utilities
-export { createSchemaFromJson, inferSchema } from "./lib/schema-inference.ts";
 export { validateJson } from "./utils/jsonValidator.ts";

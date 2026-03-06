@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CirclePlus, Info, HelpCircle } from "lucide-vue-next";
+import { CirclePlus, HelpCircle, Info } from "lucide-vue-next";
 import { ref, useId } from "vue";
 import Badge from "../../components/ui/Badge.vue";
 import Button from "../../components/ui/Button.vue";

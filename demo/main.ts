@@ -1,7 +1,7 @@
-import { createApp } from "vue";
-import PrimeVue from "primevue/config";
 import Aura from "@primevue/themes/aura";
+import PrimeVue from "primevue/config";
 import Tooltip from "primevue/tooltip";
+import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 import "./index.css";

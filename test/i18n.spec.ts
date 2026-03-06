@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { en } from "../src/i18n/locales/en.ts";
+import { formatTranslation } from "../src/hooks/use-translation.ts";
 import { de } from "../src/i18n/locales/de.ts";
+import { en } from "../src/i18n/locales/en.ts";
 import { fr } from "../src/i18n/locales/fr.ts";
 import type { Translation } from "../src/i18n/translation-keys.ts";
-import { formatTranslation } from "../src/hooks/use-translation.ts";
 
 describe("i18n Translations", () => {
   it("en locale has all required keys", () => {

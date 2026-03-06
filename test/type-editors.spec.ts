@@ -1,12 +1,12 @@
 import { mount } from "@vue/test-utils";
 import PrimeVue from "primevue/config";
 import { describe, expect, it } from "vitest";
+import BooleanEditor from "../src/components/SchemaEditor/types/BooleanEditor.vue";
+import NumberEditor from "../src/components/SchemaEditor/types/NumberEditor.vue";
+import StringEditor from "../src/components/SchemaEditor/types/StringEditor.vue";
 import { en } from "../src/i18n/locales/en.ts";
 import { TranslationKey } from "../src/i18n/translation-context.ts";
 import type { JSONSchema } from "../src/types/jsonSchema.ts";
-import StringEditor from "../src/components/SchemaEditor/types/StringEditor.vue";
-import NumberEditor from "../src/components/SchemaEditor/types/NumberEditor.vue";
-import BooleanEditor from "../src/components/SchemaEditor/types/BooleanEditor.vue";
 
 function mountWithTranslation(component: any, options: any = {}) {
   return mount(component, {

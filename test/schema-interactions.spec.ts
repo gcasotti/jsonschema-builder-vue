@@ -2,15 +2,15 @@ import { mount } from "@vue/test-utils";
 import PrimeVue from "primevue/config";
 import Tooltip from "primevue/tooltip";
 import { describe, expect, it } from "vitest";
-import { en } from "../src/i18n/locales/en.ts";
-import { TranslationKey } from "../src/i18n/translation-context.ts";
+import { nextTick } from "vue";
+import SchemaVisualEditor from "../src/components/SchemaEditor/SchemaVisualEditor.vue";
 import {
   createSchemaStore,
   SchemaStoreKey,
 } from "../src/hooks/useSchemaStore.ts";
+import { en } from "../src/i18n/locales/en.ts";
+import { TranslationKey } from "../src/i18n/translation-context.ts";
 import type { JSONSchema } from "../src/types/jsonSchema.ts";
-import SchemaVisualEditor from "../src/components/SchemaEditor/SchemaVisualEditor.vue";
-import { nextTick } from "vue";
 
 const TIMEOUT = 5000;
 

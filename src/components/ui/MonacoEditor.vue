@@ -12,9 +12,10 @@
  * Usage:
  *   <MonacoEditor v-model="jsonText" language="json" />
  */
+
+import * as monaco from "monaco-editor";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useMonacoTheme } from "../../hooks/use-monaco-theme.ts";
-import * as monaco from "monaco-editor";
 
 const props = withDefaults(
   defineProps<{

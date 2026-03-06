@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, useId } from "vue";
+import { computed, ref, useId } from "vue";
 import InputField from "../../../components/ui/InputField.vue";
 import Label from "../../../components/ui/Label.vue";
 import Switch from "../../../components/ui/Switch.vue";

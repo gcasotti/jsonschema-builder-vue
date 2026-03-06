@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { createSchemaStore, _testing } from "../src/hooks/useSchemaStore.ts";
+import { _testing, createSchemaStore } from "../src/hooks/useSchemaStore.ts";
 import type { JSONSchema, ObjectJSONSchema } from "../src/types/jsonSchema.ts";
 
 const {

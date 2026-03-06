@@ -1,10 +1,10 @@
 import { mount } from "@vue/test-utils";
 import PrimeVue from "primevue/config";
 import { describe, expect, it } from "vitest";
-import { en } from "../src/i18n/locales/en.ts";
-import { TranslationKey } from "../src/i18n/translation-context.ts";
 import SchemaTypeSelector from "../src/components/SchemaEditor/SchemaTypeSelector.vue";
 import TypeDropdown from "../src/components/SchemaEditor/TypeDropdown.vue";
+import { en } from "../src/i18n/locales/en.ts";
+import { TranslationKey } from "../src/i18n/translation-context.ts";
 
 function mountWithTranslation(component: any, options: any = {}) {
   return mount(component, {

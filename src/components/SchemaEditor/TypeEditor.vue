@@ -7,14 +7,13 @@ import type {
 } from "../../types/jsonSchema.ts";
 import { withObjectSchema } from "../../types/jsonSchema.ts";
 import type { ValidationTreeNode } from "../../types/validation.ts";
-
+import ArrayEditor from "./types/ArrayEditor.vue";
+import BooleanEditor from "./types/BooleanEditor.vue";
+import NumberEditor from "./types/NumberEditor.vue";
+import ObjectEditor from "./types/ObjectEditor.vue";
 // ── Synchronous imports — NO defineAsyncComponent / Suspense ──
 // Async components + Suspense caused re-resolution loops during type changes.
 import StringEditor from "./types/StringEditor.vue";
-import NumberEditor from "./types/NumberEditor.vue";
-import BooleanEditor from "./types/BooleanEditor.vue";
-import ObjectEditor from "./types/ObjectEditor.vue";
-import ArrayEditor from "./types/ArrayEditor.vue";
 
 const props = withDefaults(
   defineProps<{

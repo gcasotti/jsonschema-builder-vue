@@ -2,16 +2,16 @@ import { mount } from "@vue/test-utils";
 import PrimeVue from "primevue/config";
 import Tooltip from "primevue/tooltip";
 import { describe, expect, it, vi } from "vitest";
-import { en } from "../src/i18n/locales/en.ts";
-import { TranslationKey } from "../src/i18n/translation-context.ts";
+import AddFieldButton from "../src/components/SchemaEditor/AddFieldButton.vue";
+import SchemaFieldList from "../src/components/SchemaEditor/SchemaFieldList.vue";
+import SchemaVisualEditor from "../src/components/SchemaEditor/SchemaVisualEditor.vue";
 import {
   createSchemaStore,
   SchemaStoreKey,
 } from "../src/hooks/useSchemaStore.ts";
+import { en } from "../src/i18n/locales/en.ts";
+import { TranslationKey } from "../src/i18n/translation-context.ts";
 import type { JSONSchema, ObjectJSONSchema } from "../src/types/jsonSchema.ts";
-import SchemaVisualEditor from "../src/components/SchemaEditor/SchemaVisualEditor.vue";
-import AddFieldButton from "../src/components/SchemaEditor/AddFieldButton.vue";
-import SchemaFieldList from "../src/components/SchemaEditor/SchemaFieldList.vue";
 
 const TIMEOUT = 5000;
 

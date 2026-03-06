@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Maximize2 } from "lucide-vue-next";
+import TabPanel from "primevue/tabpanel";
 import { ref, watch } from "vue";
 import Tabs from "../../components/ui/Tabs.vue";
 import { useTranslation } from "../../hooks/use-translation.ts";
@@ -11,7 +12,6 @@ import { cn } from "../../lib/utils.ts";
 import type { JSONSchema } from "../../types/jsonSchema.ts";
 import JsonSchemaVisualizer from "./JsonSchemaVisualizer.vue";
 import SchemaVisualEditor from "./SchemaVisualEditor.vue";
-import TabPanel from "primevue/tabpanel";
 
 /** @public */
 export interface JsonSchemaEditorProps {

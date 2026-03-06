@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { X } from "lucide-vue-next";
-import { ref, computed, useId } from "vue";
+import { computed, ref, useId } from "vue";
 import InputField from "../../../components/ui/InputField.vue";
 import Label from "../../../components/ui/Label.vue";
 import { useTranslation } from "../../../hooks/use-translation.ts";

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ChevronDown, ChevronRight, X } from "lucide-vue-next";
-import { ref, computed } from "vue";
-import InputField from "../../components/ui/InputField.vue";
+import { computed, ref } from "vue";
 import Badge from "../../components/ui/Badge.vue";
 import ButtonToggle from "../../components/ui/ButtonToggle.vue";
+import InputField from "../../components/ui/InputField.vue";
 import { useTranslation } from "../../hooks/use-translation.ts";
 import { useSchemaStore } from "../../hooks/useSchemaStore.ts";
 import { cn } from "../../lib/utils.ts";

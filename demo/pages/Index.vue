@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {
-  Clipboard,
   Check,
   ChevronDown,
   ChevronRight,
+  Clipboard,
   Code2,
   GitBranch,
   Globe,
@@ -13,8 +13,7 @@ import {
   Sparkles,
   Zap,
 } from "lucide-vue-next";
-import { ref, computed, nextTick } from "vue";
-import { exampleSchema } from "../utils/schemaExample.ts";
+import { computed, nextTick, ref } from "vue";
 import JsonValidator from "../../src/components/features/JsonValidator.vue";
 import SchemaInferencer from "../../src/components/features/SchemaInferencer.vue";
 import JsonSchemaEditor from "../../src/components/SchemaEditor/JsonSchemaEditor.vue";
@@ -22,6 +21,7 @@ import { en } from "../../src/i18n/locales/en.ts";
 import { provideTranslation } from "../../src/i18n/translation-context.ts";
 import type { Translation } from "../../src/i18n/translation-keys.ts";
 import type { JSONSchema } from "../../src/types/jsonSchema.ts";
+import { exampleSchema } from "../utils/schemaExample.ts";
 
 // ── Reactive translation ──
 const translation = ref<Translation>(en);
