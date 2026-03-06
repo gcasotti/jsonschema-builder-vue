@@ -23,6 +23,9 @@ export default defineConfig({
     define: {
       ...publicVars,
       "import.meta.env.SSR": "false",
+      "import.meta.env.BASE_URL": JSON.stringify(
+        process.env.PUBLIC_BASE_PATH || "/",
+      ),
     },
   },
   html: {
