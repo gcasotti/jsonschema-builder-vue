@@ -49,7 +49,7 @@ describe("SchemaTypeSelector", () => {
     // Click the "number" button (second one)
     await buttons[1].trigger("click");
     expect(wrapper.emitted("update:modelValue")).toBeTruthy();
-    expect(wrapper.emitted("update:modelValue")![0]).toEqual(["number"]);
+    expect(wrapper.emitted("update:modelValue")?.[0]).toEqual(["number"]);
   });
 
   it("highlights selected type", () => {
@@ -106,8 +106,8 @@ describe("TypeDropdown", () => {
       btn.text().includes(en.schemaTypeNumber),
     );
     expect(numberBtn).toBeTruthy();
-    await numberBtn!.trigger("click");
+    await numberBtn?.trigger("click");
     expect(wrapper.emitted("update:modelValue")).toBeTruthy();
-    expect(wrapper.emitted("update:modelValue")![0]).toEqual(["number"]);
+    expect(wrapper.emitted("update:modelValue")?.[0]).toEqual(["number"]);
   });
 });

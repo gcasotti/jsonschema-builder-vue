@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import PrimeVue from "primevue/config";
 import Tooltip from "primevue/tooltip";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import AddFieldButton from "../src/components/SchemaEditor/AddFieldButton.vue";
 import SchemaFieldList from "../src/components/SchemaEditor/SchemaFieldList.vue";
 import SchemaVisualEditor from "../src/components/SchemaEditor/SchemaVisualEditor.vue";

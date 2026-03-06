@@ -50,19 +50,19 @@ describe("navigateToPath", () => {
     const result = navigateToPath(root, ["person"]);
     expect(result).toBeDefined();
     expect((result as ObjectJSONSchema).type).toBe("object");
-    expect((result as ObjectJSONSchema).properties!.firstName).toBeDefined();
+    expect((result as ObjectJSONSchema).properties?.firstName).toBeDefined();
   });
 
   it("navigates two levels deep", { timeout: TIMEOUT }, () => {
     const result = navigateToPath(root, ["person", "address"]);
     expect(result).toBeDefined();
-    expect((result as ObjectJSONSchema).properties!.city).toBeDefined();
+    expect((result as ObjectJSONSchema).properties?.city).toBeDefined();
   });
 
   it("follows array items", { timeout: TIMEOUT }, () => {
     const result = navigateToPath(root, ["tags"]);
     expect(result).toBeDefined();
-    expect((result as ObjectJSONSchema).properties!.label).toBeDefined();
+    expect((result as ObjectJSONSchema).properties?.label).toBeDefined();
   });
 
   it("returns undefined for invalid path", { timeout: TIMEOUT }, () => {
@@ -99,10 +99,10 @@ describe("setDeep", () => {
       properties: { a: { type: "string" } },
     };
     const result = setDeep(root, [], "b", { type: "number" });
-    expect((result as ObjectJSONSchema).properties!.b).toEqual({
+    expect((result as ObjectJSONSchema).properties?.b).toEqual({
       type: "number",
     });
-    expect((result as ObjectJSONSchema).properties!.a).toEqual({
+    expect((result as ObjectJSONSchema).properties?.a).toEqual({
       type: "string",
     });
   });
@@ -115,10 +115,10 @@ describe("setDeep", () => {
       },
     };
     const result = setDeep(root, ["person"], "age", { type: "number" });
-    const person = (result as ObjectJSONSchema).properties!
-      .person as ObjectJSONSchema;
-    expect(person.properties!.age).toEqual({ type: "number" });
-    expect(person.properties!.name).toEqual({ type: "string" });
+    const person = (result as ObjectJSONSchema).properties
+      ?.person as ObjectJSONSchema;
+    expect(person.properties?.age).toEqual({ type: "number" });
+    expect(person.properties?.name).toEqual({ type: "string" });
   });
 
   it("does not mutate the original schema", { timeout: TIMEOUT }, () => {
@@ -140,8 +140,8 @@ describe("deleteDeep", () => {
       required: ["a"],
     };
     const result = deleteDeep(root, [], "a") as ObjectJSONSchema;
-    expect(result.properties!.a).toBeUndefined();
-    expect(result.properties!.b).toEqual({ type: "number" });
+    expect(result.properties?.a).toBeUndefined();
+    expect(result.properties?.b).toEqual({ type: "number" });
     expect(result.required).toEqual([]);
   });
 
@@ -156,9 +156,9 @@ describe("deleteDeep", () => {
       },
     };
     const result = deleteDeep(root, ["person"], "name") as ObjectJSONSchema;
-    const person = result.properties!.person as ObjectJSONSchema;
-    expect(person.properties!.name).toBeUndefined();
-    expect(person.properties!.age).toEqual({ type: "number" });
+    const person = result.properties?.person as ObjectJSONSchema;
+    expect(person.properties?.name).toBeUndefined();
+    expect(person.properties?.age).toEqual({ type: "number" });
   });
 });
 
@@ -242,7 +242,7 @@ describe("createSchemaStore", () => {
     store.updateProperty([], "email", { type: "string", format: "email" });
     expect(onChange).toHaveBeenCalledTimes(1);
     const updated = store.schema.value as ObjectJSONSchema;
-    expect(updated.properties!.email).toEqual({
+    expect(updated.properties?.email).toEqual({
       type: "string",
       format: "email",
     });
@@ -254,8 +254,8 @@ describe("createSchemaStore", () => {
     store.deleteProperty([], "age");
     expect(onChange).toHaveBeenCalledTimes(1);
     const updated = store.schema.value as ObjectJSONSchema;
-    expect(updated.properties!.age).toBeUndefined();
-    expect(updated.properties!.person).toBeDefined();
+    expect(updated.properties?.age).toBeUndefined();
+    expect(updated.properties?.person).toBeDefined();
   });
 
   it("calls onChange on renameProperty", { timeout: TIMEOUT }, () => {
@@ -264,8 +264,8 @@ describe("createSchemaStore", () => {
     store.renameProperty([], "age", "userAge");
     expect(onChange).toHaveBeenCalledTimes(1);
     const updated = store.schema.value as ObjectJSONSchema;
-    expect(updated.properties!.userAge).toEqual({ type: "number" });
-    expect(updated.properties!.age).toBeUndefined();
+    expect(updated.properties?.userAge).toEqual({ type: "number" });
+    expect(updated.properties?.age).toBeUndefined();
   });
 
   it("calls onChange on setPropertyRequired", { timeout: TIMEOUT }, () => {
@@ -283,8 +283,8 @@ describe("createSchemaStore", () => {
     store.updateProperty(["person"], "firstName", { type: "number" });
     expect(onChange).toHaveBeenCalledTimes(1);
     const updated = store.schema.value as ObjectJSONSchema;
-    const person = updated.properties!.person as ObjectJSONSchema;
-    expect(person.properties!.firstName).toEqual({ type: "number" });
+    const person = updated.properties?.person as ObjectJSONSchema;
+    expect(person.properties?.firstName).toEqual({ type: "number" });
   });
 
   it("handles addProperty with required", { timeout: TIMEOUT }, () => {
@@ -298,7 +298,7 @@ describe("createSchemaStore", () => {
     });
     expect(onChange).toHaveBeenCalledTimes(1);
     const updated = store.schema.value as ObjectJSONSchema;
-    expect(updated.properties!.email).toBeDefined();
+    expect(updated.properties?.email).toBeDefined();
     expect(updated.required).toContain("email");
   });
 
@@ -314,7 +314,7 @@ describe("createSchemaStore", () => {
 
   it("reentrance guard prevents nested calls", { timeout: TIMEOUT }, () => {
     let callCount = 0;
-    const onChange = (schema: JSONSchema) => {
+    const onChange = (_schema: JSONSchema) => {
       callCount++;
       // Simulate a re-entrant call (e.g., from a watcher triggered by the change)
       if (callCount < 10) {
@@ -332,7 +332,7 @@ describe("createSchemaStore", () => {
     expect(store.getAtPath([])).toEqual(initialSchema);
     const personSchema = store.getAtPath(["person"]);
     expect(personSchema).toBeDefined();
-    expect((personSchema as ObjectJSONSchema).properties!.firstName).toEqual({
+    expect((personSchema as ObjectJSONSchema).properties?.firstName).toEqual({
       type: "string",
     });
   });

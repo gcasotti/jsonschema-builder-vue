@@ -56,7 +56,7 @@ describe("Button", () => {
     });
     await wrapper.find("button").trigger("click");
     expect(wrapper.emitted("click")).toBeTruthy();
-    expect(wrapper.emitted("click")!.length).toBe(1);
+    expect(wrapper.emitted("click")?.length).toBe(1);
   });
 
   it("renders as submit button", () => {

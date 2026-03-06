@@ -64,6 +64,7 @@ export function useTranslation(): Translation {
       (newTranslation) => {
         const keys = Object.keys(newTranslation) as (keyof Translation)[];
         for (const key of keys) {
+          // biome-ignore lint/suspicious/noExplicitAny: dynamic key assignment to reactive proxy
           (state as any)[key] = newTranslation[key];
         }
       },

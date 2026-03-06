@@ -38,6 +38,7 @@ const schemaText = computed(() => JSON.stringify(schema.value, null, 2));
 type NavItem = {
   id: string;
   label: string;
+  // biome-ignore lint/suspicious/noExplicitAny: accepts various icon components
   icon?: any;
   children?: { id: string; label: string }[];
 };
