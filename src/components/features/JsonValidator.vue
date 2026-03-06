@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { CheckCircle, Loader2, XCircle } from "lucide-vue-next";
-import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { ref, watch, computed } from "vue";
 import Button from "../../components/ui/Button.vue";
 import Dialog from "../../components/ui/Dialog.vue";
-import { useMonacoTheme } from "../../hooks/use-monaco-theme.ts";
+import MonacoEditor from "../../components/ui/MonacoEditor.vue";
 import { useTranslation } from "../../hooks/use-translation.ts";
 import type { JSONSchema } from "../../types/jsonSchema.ts";
 import { validateJson, type ValidationResult } from "../../utils/jsonValidator.ts";
-import * as monaco from "monaco-editor";
 
 const props = defineProps<{
   schema: JSONSchema;
@@ -19,15 +18,13 @@ const emit = defineEmits<{
 }>();
 
 const t = useTranslation();
-const editorContainer = ref<HTMLDivElement | null>(null);
-const editorInstance = ref<monaco.editor.IStandaloneCodeEditor | null>(null);
+const monacoRef = ref<InstanceType<typeof MonacoEditor> | null>(null);
 const validationResult = ref<ValidationResult | null>(null);
 const isValidating = ref(false);
-const { currentTheme, defineMonacoThemes, defaultEditorOptions } = useMonacoTheme();
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-const jsonInput = ref(
+const editorText = ref(
   JSON.stringify(
     {
       name: "John Doe",
@@ -41,7 +38,7 @@ const jsonInput = ref(
 
 const handleValidation = () => {
   isValidating.value = true;
-  validationResult.value = validateJson(jsonInput.value, props.schema);
+  validationResult.value = validateJson(editorText.value, props.schema);
   isValidating.value = false;
 };
 
@@ -55,35 +52,17 @@ watch(
   (visible) => {
     if (visible) {
       setTimeout(() => {
-        if (!editorContainer.value) return;
-        if (editorInstance.value) {
-          editorInstance.value.layout();
-          return;
-        }
-
-        defineMonacoThemes(monaco);
-        editorInstance.value = monaco.editor.create(editorContainer.value, {
-          value: jsonInput.value,
-          language: "json",
-          theme: currentTheme(),
-          ...defaultEditorOptions,
-        });
-
-        editorInstance.value.onDidChangeModelContent(() => {
-          jsonInput.value = editorInstance.value?.getValue() || "";
-          debouncedValidate();
-        });
-
+        monacoRef.value?.layout();
         handleValidation();
       }, 100);
     }
   },
 );
 
-onUnmounted(() => {
-  editorInstance.value?.dispose();
-  if (debounceTimer) clearTimeout(debounceTimer);
-});
+const handleEditorUpdate = (newText: string) => {
+  editorText.value = newText;
+  debouncedValidate();
+};
 
 const errorCount = computed(() => validationResult.value?.errors?.length || 0);
 </script>
@@ -103,7 +82,12 @@ const errorCount = computed(() => validationResult.value?.errors?.length || 0);
 
     <div class="space-y-4">
       <div class="border rounded-md h-[300px] overflow-hidden">
-        <div ref="editorContainer" class="w-full h-full" />
+        <MonacoEditor
+          ref="monacoRef"
+          :model-value="editorText"
+          @update:model-value="handleEditorUpdate"
+          language="json"
+        />
       </div>
 
       <div class="flex items-center justify-between">

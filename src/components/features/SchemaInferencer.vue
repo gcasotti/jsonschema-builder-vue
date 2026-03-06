@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { Loader2 } from "lucide-vue-next";
-import { ref, watch, onUnmounted } from "vue";
+import { ref, watch } from "vue";
 import Button from "../../components/ui/Button.vue";
 import Dialog from "../../components/ui/Dialog.vue";
-import { useMonacoTheme } from "../../hooks/use-monaco-theme.ts";
+import MonacoEditor from "../../components/ui/MonacoEditor.vue";
 import { useTranslation } from "../../hooks/use-translation.ts";
 import type { JSONSchema } from "../../types/jsonSchema.ts";
 import { createSchemaFromJson } from "../../lib/schema-inference.ts";
-import * as monaco from "monaco-editor";
 
 const props = defineProps<{
   visible: boolean;
@@ -19,11 +18,9 @@ const emit = defineEmits<{
 }>();
 
 const t = useTranslation();
-const editorContainer = ref<HTMLDivElement | null>(null);
-const editorInstance = ref<monaco.editor.IStandaloneCodeEditor | null>(null);
+const monacoRef = ref<InstanceType<typeof MonacoEditor> | null>(null);
 const isProcessing = ref(false);
 const errorMessage = ref("");
-const { currentTheme, defineMonacoThemes, defaultEditorOptions } = useMonacoTheme();
 
 const sampleJson = JSON.stringify(
   {
@@ -36,36 +33,20 @@ const sampleJson = JSON.stringify(
   2,
 );
 
+const editorText = ref(sampleJson);
+
 watch(
   () => props.visible,
   (visible) => {
     if (visible) {
-      setTimeout(() => {
-        if (!editorContainer.value) return;
-        if (editorInstance.value) {
-          editorInstance.value.layout();
-          return;
-        }
-
-        defineMonacoThemes(monaco);
-        editorInstance.value = monaco.editor.create(editorContainer.value, {
-          value: sampleJson,
-          language: "json",
-          theme: currentTheme(),
-          ...defaultEditorOptions,
-        });
-      }, 100);
+      setTimeout(() => monacoRef.value?.layout(), 100);
     }
   },
 );
 
-onUnmounted(() => {
-  editorInstance.value?.dispose();
-});
-
 const handleInfer = () => {
-  const value = editorInstance.value?.getValue();
-  if (!value?.trim()) return;
+  const value = editorText.value.trim();
+  if (!value) return;
 
   isProcessing.value = true;
   errorMessage.value = "";
@@ -98,7 +79,11 @@ const handleInfer = () => {
 
     <div class="space-y-4">
       <div class="border rounded-md h-[300px] overflow-hidden">
-        <div ref="editorContainer" class="w-full h-full" />
+        <MonacoEditor
+          ref="monacoRef"
+          v-model="editorText"
+          language="json"
+        />
       </div>
 
       <p v-if="errorMessage" class="text-sm text-red-600">{{ errorMessage }}</p>
