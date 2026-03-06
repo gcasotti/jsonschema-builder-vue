@@ -8,10 +8,14 @@ import { useTranslation } from "../../hooks/use-translation.ts";
 import type { JSONSchema } from "../../types/jsonSchema.ts";
 import { validateJson, type ValidationResult } from "../../utils/jsonValidator.ts";
 
-const props = defineProps<{
-  schema: JSONSchema;
-  visible: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    schema: JSONSchema;
+    /** When provided, renders as a dialog. Omit to render inline. */
+    visible?: boolean;
+  }>(),
+  { visible: undefined },
+);
 
 const emit = defineEmits<{
   "update:visible": [value: boolean];
@@ -21,6 +25,7 @@ const t = useTranslation();
 const monacoRef = ref<InstanceType<typeof MonacoEditor> | null>(null);
 const validationResult = ref<ValidationResult | null>(null);
 const isValidating = ref(false);
+const isDialog = ref(props.visible !== undefined);
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -68,12 +73,15 @@ const errorCount = computed(() => validationResult.value?.errors?.length || 0);
 </script>
 
 <template>
-  <Dialog
-    :visible="props.visible"
-    @update:visible="emit('update:visible', $event)"
-    class="md:max-w-[700px] max-h-[80vh] w-[95vw] jsonjoy"
+  <!-- Validation results (shared between dialog and inline) -->
+  <component :is="isDialog ? Dialog : 'div'"
+    v-bind="isDialog ? {
+      visible: props.visible ?? false,
+      class: 'md:max-w-[700px] max-h-[80vh] w-[95vw] jsonjoy',
+    } : { class: 'space-y-4 jsonjoy' }"
+    @update:visible="isDialog && emit('update:visible', $event)"
   >
-    <template #header>
+    <template v-if="isDialog" #header>
       <div class="mb-2">
         <div class="text-lg font-semibold">{{ t.jsonValidatorTitle }}</div>
         <p class="text-sm text-muted-foreground">{{ t.jsonValidatorDescription }}</p>
@@ -114,7 +122,7 @@ const errorCount = computed(() => validationResult.value?.errors?.length || 0);
         <div
           v-for="(error, idx) in validationResult.errors"
           :key="idx"
-          class="flex items-start gap-2 p-2 rounded-md bg-red-50 text-sm"
+          class="flex items-start gap-2 p-2 rounded-md bg-red-50 dark:bg-red-950/20 text-sm"
         >
           <XCircle :size="14" class="text-red-500 mt-0.5 shrink-0" />
           <div>
@@ -125,5 +133,5 @@ const errorCount = computed(() => validationResult.value?.errors?.length || 0);
         </div>
       </div>
     </div>
-  </Dialog>
+  </component>
 </template>

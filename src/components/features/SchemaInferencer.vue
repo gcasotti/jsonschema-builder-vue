@@ -8,9 +8,13 @@ import { useTranslation } from "../../hooks/use-translation.ts";
 import type { JSONSchema } from "../../types/jsonSchema.ts";
 import { createSchemaFromJson } from "../../lib/schema-inference.ts";
 
-const props = defineProps<{
-  visible: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    /** When provided, renders as a dialog. Omit to render inline. */
+    visible?: boolean;
+  }>(),
+  { visible: undefined },
+);
 
 const emit = defineEmits<{
   "update:visible": [value: boolean];
@@ -34,6 +38,7 @@ const sampleJson = JSON.stringify(
 );
 
 const editorText = ref(sampleJson);
+const isDialog = ref(props.visible !== undefined);
 
 watch(
   () => props.visible,
@@ -55,7 +60,7 @@ const handleInfer = () => {
     const jsonObject = JSON.parse(value);
     const inferredSchema = createSchemaFromJson(jsonObject);
     emit("schemaInferred", inferredSchema);
-    emit("update:visible", false);
+    if (isDialog.value) emit("update:visible", false);
   } catch (e) {
     errorMessage.value = e instanceof Error ? e.message : "Invalid JSON";
   } finally {
@@ -65,8 +70,10 @@ const handleInfer = () => {
 </script>
 
 <template>
+  <!-- Dialog mode (when :visible is provided) -->
   <Dialog
-    :visible="props.visible"
+    v-if="isDialog"
+    :visible="props.visible ?? false"
     @update:visible="emit('update:visible', $event)"
     class="md:max-w-[700px] max-h-[80vh] w-[95vw] jsonjoy"
   >
@@ -79,11 +86,7 @@ const handleInfer = () => {
 
     <div class="space-y-4">
       <div class="border rounded-md h-[300px] overflow-hidden">
-        <MonacoEditor
-          ref="monacoRef"
-          v-model="editorText"
-          language="json"
-        />
+        <MonacoEditor ref="monacoRef" v-model="editorText" language="json" />
       </div>
 
       <p v-if="errorMessage" class="text-sm text-red-600">{{ errorMessage }}</p>
@@ -99,4 +102,20 @@ const handleInfer = () => {
       </div>
     </div>
   </Dialog>
+
+  <!-- Inline mode (when :visible is not provided) -->
+  <div v-else class="space-y-4 jsonjoy">
+    <div class="border rounded-md h-[300px] overflow-hidden">
+      <MonacoEditor ref="monacoRef" v-model="editorText" language="json" />
+    </div>
+
+    <p v-if="errorMessage" class="text-sm text-red-600">{{ errorMessage }}</p>
+
+    <div class="flex justify-end">
+      <Button size="sm" @click="handleInfer" :disabled="isProcessing">
+        <Loader2 v-if="isProcessing" class="animate-spin mr-2" :size="14" />
+        {{ t.schemaInferencerInferButton }}
+      </Button>
+    </div>
+  </div>
 </template>

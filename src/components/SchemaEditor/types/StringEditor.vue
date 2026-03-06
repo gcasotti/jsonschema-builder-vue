@@ -92,7 +92,7 @@ const maxLengthValue = computed(() => maxLength.value ?? "");
 const patternValue = computed(() => pattern.value ?? "");
 const formatValue = computed(() => format.value || "none");
 
-const formatOptions = [
+const formatOptions = computed(() => [
   { label: t.stringFormatNone, value: "none" },
   { label: t.stringFormatDateTime, value: "date-time" },
   { label: t.stringFormatDate, value: "date" },
@@ -103,7 +103,7 @@ const formatOptions = [
   { label: t.stringFormatHostname, value: "hostname" },
   { label: t.stringFormatIpv4, value: "ipv4" },
   { label: t.stringFormatIpv6, value: "ipv6" },
-];
+]);
 
 const needsDetail = computed(() =>
   !props.readOnly ||
