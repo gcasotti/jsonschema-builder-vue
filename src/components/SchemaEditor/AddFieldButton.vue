@@ -6,19 +6,19 @@ import Button from "../../components/ui/Button.vue";
 import Dialog from "../../components/ui/Dialog.vue";
 import InputField from "../../components/ui/InputField.vue";
 import { useTranslation } from "../../hooks/use-translation.ts";
-import type { NewField, SchemaType } from "../../types/jsonSchema.ts";
+import { useSchemaStore } from "../../hooks/useSchemaStore.ts";
+import type { SchemaType } from "../../types/jsonSchema.ts";
 import SchemaTypeSelector from "./SchemaTypeSelector.vue";
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
+    path: string[];
     variant?: "primary" | "secondary";
   }>(),
   { variant: "primary" },
 );
 
-const emit = defineEmits<{
-  addField: [field: NewField];
-}>();
+const store = useSchemaStore();
 
 const dialogOpen = ref(false);
 const fieldName = ref("");
@@ -39,7 +39,7 @@ const handleSubmit = (e: Event) => {
   e.preventDefault();
   if (!fieldName.value.trim()) return;
 
-  emit("addField", {
+  store.addProperty(props.path, {
     name: fieldName.value,
     type: fieldType.value,
     description: fieldDesc.value,

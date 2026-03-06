@@ -12,7 +12,6 @@ export type Property = {
 };
 
 export function copySchema<T extends JSONSchema>(schema: T): T {
-  if (typeof structuredClone === "function") return structuredClone(schema);
   return JSON.parse(JSON.stringify(schema));
 }
 
