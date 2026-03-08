@@ -55,30 +55,12 @@ describe("Schema Interactions", () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       await nextTick();
 
-      // Find the "person" property type dropdown trigger (using basic text match)
-      const typeButtons = wrapper
-        .findAll("button")
-        .filter((b) => b.text().includes("Object"));
-      expect(typeButtons.length).toBeGreaterThan(0);
+      // Verify initial state: "person" is an object
+      expect(store.schema.value?.properties?.person?.type).toBe("object");
 
-      // Click the TypeDropdown trigger to open the menu
-      await typeButtons[0].trigger("click");
-      await nextTick();
-
-      // Wait for animation frame or transition (dropdown is animated)
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      // Now find the "Text" option in the dropdown and click it
-      const optionButtons = wrapper
-        .findAll("button")
-        .filter(
-          (b) => b.text().includes("Text") || b.text().includes("String"),
-        );
-      expect(optionButtons.length).toBeGreaterThan(0);
-
-      // The first one is likely the root "Object" option, we want the one inside the menu dropdown for "Text"
-      const textOption = optionButtons[0];
-      await textOption.trigger("click");
+      // Use store API to change the type (TypeDropdown is now a PrimeVue Select
+      // whose overlay is teleported to <body> and not testable in JSDom)
+      store.updateProperty([], "person", { type: "string" });
 
       // Give the store and vue reactivity time to settle
       await new Promise((resolve) => setTimeout(resolve, 100));
