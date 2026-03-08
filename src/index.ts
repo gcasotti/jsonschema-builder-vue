@@ -6,16 +6,6 @@ export { default as JsonSchemaEditor } from "./components/SchemaEditor/JsonSchem
 export { default as JsonSchemaVisualizer } from "./components/SchemaEditor/JsonSchemaVisualizer.vue";
 export { default as SchemaVisualEditor } from "./components/SchemaEditor/SchemaVisualEditor.vue";
 export { useMonacoTheme } from "./hooks/use-monaco-theme.ts";
-// Themes
-export {
-  type PresetName,
-  auraPreset,
-  laraPreset,
-  materialPreset,
-  noraPreset,
-  presets,
-  useTheme,
-} from "./themes/index.ts";
 // i18n
 export { en } from "./i18n/locales/en.ts";
 // Composables
@@ -27,6 +17,16 @@ export {
 export type { Translation } from "./i18n/translation-keys.ts";
 // Utilities
 export { createSchemaFromJson, inferSchema } from "./lib/schema-inference.ts";
+// Themes
+export {
+  auraPreset,
+  laraPreset,
+  materialPreset,
+  noraPreset,
+  type PresetName,
+  presets,
+  useTheme,
+} from "./themes/index.ts";
 // Types
 export type {
   JSONSchema,

@@ -71,10 +71,7 @@ const cssScopingPlugin = () => {
       // Prefix built-in keyframe names from tailwind with jscb-
       // See https://tailwindcss.com/docs/animation
       root.walkAtRules((atRule) => {
-        if (
-          atRule.name === "keyframes" &&
-          !atRule.params.startsWith("jscb-")
-        ) {
+        if (atRule.name === "keyframes" && !atRule.params.startsWith("jscb-")) {
           atRule.params = `jscb-${atRule.params}`;
         }
       });

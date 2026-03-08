@@ -72,8 +72,8 @@ const buildValidationProps = (
   const validationProps: ObjectJSONSchema = {
     type: "array",
     ...base,
-    minItems: overrides.minItems ?? (minItems.value ?? undefined),
-    maxItems: overrides.maxItems ?? (maxItems.value ?? undefined),
+    minItems: overrides.minItems ?? minItems.value ?? undefined,
+    maxItems: overrides.maxItems ?? maxItems.value ?? undefined,
     uniqueItems: (overrides.uniqueItems ?? uniqueItems.value) || undefined,
   };
 
