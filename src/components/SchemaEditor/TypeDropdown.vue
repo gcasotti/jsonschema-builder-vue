@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Check, ChevronDown } from "lucide-vue-next";
-import { onMounted, onUnmounted, ref } from "vue";
+import PSelect from "primevue/select";
+import { computed } from "vue";
+import { useOverlayContainer } from "../../hooks/use-overlay-container.ts";
 import { useTranslation } from "../../hooks/use-translation.ts";
-import { cn, getTypeColor, getTypeLabel } from "../../lib/utils.ts";
+import { getTypeColor, getTypeLabel } from "../../lib/utils.ts";
 import type { SchemaType } from "../../types/jsonSchema.ts";
 
 const props = withDefaults(
@@ -19,8 +20,7 @@ const emit = defineEmits<{
 }>();
 
 const t = useTranslation();
-const isOpen = ref(false);
-const dropdownRef = ref<HTMLDivElement | null>(null);
+const { overlayContainer } = useOverlayContainer();
 
 const typeOptions: SchemaType[] = [
   "string",
@@ -31,69 +31,48 @@ const typeOptions: SchemaType[] = [
   "null",
 ];
 
-const handleClickOutside = (event: MouseEvent) => {
-  if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
-    isOpen.value = false;
-  }
-};
+const options = computed(() =>
+  typeOptions.map((type) => ({
+    value: type,
+    label: getTypeLabel(t, type),
+    color: getTypeColor(type),
+  })),
+);
 
-onMounted(() => {
-  document.addEventListener("mousedown", handleClickOutside);
-});
+const selectedOption = computed(() =>
+  options.value.find((o) => o.value === props.modelValue),
+);
 
-onUnmounted(() => {
-  document.removeEventListener("mousedown", handleClickOutside);
-});
-
-const selectType = (type: SchemaType) => {
-  emit("update:modelValue", type);
-  isOpen.value = false;
+const handleChange = (event: { value: string }) => {
+  emit("update:modelValue", event.value as SchemaType);
 };
 </script>
 
 <template>
-  <div class="relative" ref="dropdownRef">
-    <button
-      type="button"
-      :class="
-        cn(
-          'text-xs px-3.5 py-1.5 rounded-md font-medium text-center flex items-center justify-between',
-          getTypeColor(modelValue),
-          'hover:shadow-xs hover:ring-1 hover:ring-ring/30 active:scale-95 transition-all',
-          readOnly ? '' : 'w-[92px]',
-          props.class,
-        )
-      "
-      @click="!readOnly && (isOpen = !isOpen)"
-    >
-      <span>{{ getTypeLabel(t, modelValue) }}</span>
-      <ChevronDown v-if="!readOnly" :size="14" class="ml-1" />
-    </button>
-
-    <div
-      v-if="isOpen"
-      class="absolute z-50 mt-1 w-[140px] rounded-md border bg-popover shadow-lg animate-in fade-in-50 zoom-in-95"
-    >
-      <div class="py-1">
-        <button
-          v-for="type in typeOptions"
-          :key="type"
-          type="button"
-          :class="
-            cn(
-              'w-full text-left px-3 py-1.5 text-xs flex items-center justify-between',
-              'hover:bg-muted/50 transition-colors',
-              modelValue === type && 'font-medium',
-            )
-          "
-          @click="selectType(type)"
-        >
-          <span :class="cn('px-2 py-0.5 rounded', getTypeColor(type))">
-            {{ getTypeLabel(t, type) }}
-          </span>
-          <Check v-if="modelValue === type" :size="14" />
-        </button>
-      </div>
-    </div>
-  </div>
+  <PSelect
+    :modelValue="modelValue"
+    @change="handleChange"
+    :options="options"
+    optionLabel="label"
+    optionValue="value"
+    :disabled="readOnly"
+    :appendTo="overlayContainer"
+    :class="['text-xs', $props.class]"
+    :pt="{
+      root: { style: 'min-width: 92px; padding: 0.25rem 0.5rem; font-size: 0.75rem;' },
+      label: { style: 'padding: 0.25rem 0; font-size: 0.75rem; font-weight: 500;', class: selectedOption?.color },
+      option: { style: 'font-size: 0.75rem; padding: 0.375rem 0.75rem;' },
+    }"
+  >
+    <template #option="{ option }">
+      <span :class="['px-2 py-0.5 rounded text-xs font-medium', option.color]">
+        {{ option.label }}
+      </span>
+    </template>
+    <template #value="{ value: val }">
+      <span v-if="val" :class="['text-xs font-medium', getTypeColor(val as SchemaType)]">
+        {{ getTypeLabel(t, val as SchemaType) }}
+      </span>
+    </template>
+  </PSelect>
 </template>
