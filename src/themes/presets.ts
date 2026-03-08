@@ -14,32 +14,32 @@ import Nora from "@primevue/themes/nora";
 export type PresetName = "aura" | "material" | "nora" | "lara";
 
 const fontFamily =
-    '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+  '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
 /** PrimeVue Aura – the default look (rounded, blue-tinted) */
 export const auraPreset = definePreset(Aura, {
-    semantic: { fontFamily },
+  semantic: { fontFamily },
 });
 
 /** PrimeVue Material – Material Design 3 style */
 export const materialPreset = definePreset(Material, {
-    semantic: { fontFamily },
+  semantic: { fontFamily },
 });
 
 /** PrimeVue Nora – minimal / flat / no-frills */
 export const noraPreset = definePreset(Nora, {
-    semantic: { fontFamily },
+  semantic: { fontFamily },
 });
 
 /** PrimeVue Lara – classic PrimeVue design */
 export const laraPreset = definePreset(Lara, {
-    semantic: { fontFamily },
+  semantic: { fontFamily },
 });
 
 /** Map of preset name → preset object for runtime switching */
 export const presets: Record<PresetName, typeof Aura> = {
-    aura: auraPreset,
-    material: materialPreset,
-    nora: noraPreset,
-    lara: laraPreset,
+  aura: auraPreset,
+  material: materialPreset,
+  nora: noraPreset,
+  lara: laraPreset,
 };

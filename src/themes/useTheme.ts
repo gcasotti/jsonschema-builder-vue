@@ -27,78 +27,78 @@ const DARK_MODE_SELECTOR = ".jscb-dark";
  * Must be called inside a component that is a descendant of `app.use(PrimeVue, …)`.
  */
 export function useTheme() {
-    const primevue = usePrimeVue();
+  const primevue = usePrimeVue();
 
-    /** Switch PrimeVue preset at runtime */
-    const switchPreset = (name: PresetName) => {
-        currentPreset.value = name;
-        const preset = presets[name];
-        primevue.config.theme = {
-            preset,
-            options: {
-                ...(primevue.config.theme?.options ?? {}),
-                darkModeSelector: DARK_MODE_SELECTOR,
-            },
-        };
+  /** Switch PrimeVue preset at runtime */
+  const switchPreset = (name: PresetName) => {
+    currentPreset.value = name;
+    const preset = presets[name];
+    primevue.config.theme = {
+      preset,
+      options: {
+        ...(primevue.config.theme?.options ?? {}),
+        darkModeSelector: DARK_MODE_SELECTOR,
+      },
     };
+  };
 
-    /** Toggle dark mode */
-    const toggleDarkMode = (value?: boolean) => {
-        darkMode.value = value ?? !darkMode.value;
-        applyDarkMode(darkMode.value);
-    };
+  /** Toggle dark mode */
+  const toggleDarkMode = (value?: boolean) => {
+    darkMode.value = value ?? !darkMode.value;
+    applyDarkMode(darkMode.value);
+  };
 
-    /**
-     * Apply dark mode:
-     * 1. Toggle .jscb-dark on <html> (PrimeVue dark token selector)
-     * 2. Toggle .dark on all .jscb containers (for scoped Tailwind utilities)
-     * 3. Switch Monaco editor theme
-     */
-    const applyDarkMode = (isDark: boolean) => {
-        // PrimeVue dark mode: toggle on <html> so :root matches
-        document.documentElement.classList.toggle("jscb-dark", isDark);
+  /**
+   * Apply dark mode:
+   * 1. Toggle .jscb-dark on <html> (PrimeVue dark token selector)
+   * 2. Toggle .dark on all .jscb containers (for scoped Tailwind utilities)
+   * 3. Switch Monaco editor theme
+   */
+  const applyDarkMode = (isDark: boolean) => {
+    // PrimeVue dark mode: toggle on <html> so :root matches
+    document.documentElement.classList.toggle("jscb-dark", isDark);
 
-        // Also toggle .dark on .jscb containers for any Tailwind dark: utilities
-        const els = document.querySelectorAll<HTMLElement>(".jscb");
-        for (const el of els) {
-            el.classList.toggle("dark", isDark);
-        }
+    // Also toggle .dark on .jscb containers for any Tailwind dark: utilities
+    const els = document.querySelectorAll<HTMLElement>(".jscb");
+    for (const el of els) {
+      el.classList.toggle("dark", isDark);
+    }
 
-        // Also apply to the overlay container
-        const overlayContainers = document.querySelectorAll<HTMLElement>(
-            "[data-jscb-overlay-container]",
-        );
-        for (const el of overlayContainers) {
-            el.classList.toggle("dark", isDark);
-        }
-
-        // Switch Monaco editor theme
-        try {
-            MonacoModule.editor.setTheme(isDark ? "vs-dark" : "vs");
-        } catch {
-            // Monaco may not be loaded yet — ignore
-        }
-    };
-
-    // Sync dark mode on mount
-    watch(
-        darkMode,
-        (isDark) => {
-            applyDarkMode(isDark);
-        },
-        { immediate: true },
+    // Also apply to the overlay container
+    const overlayContainers = document.querySelectorAll<HTMLElement>(
+      "[data-jscb-overlay-container]",
     );
+    for (const el of overlayContainers) {
+      el.classList.toggle("dark", isDark);
+    }
 
-    return {
-        /** Reactive ref to the active preset name */
-        currentPreset,
-        /** Reactive ref to dark mode state */
-        darkMode,
-        /** Switch to a different PrimeVue preset by name */
-        switchPreset,
-        /** Toggle or set dark mode */
-        toggleDarkMode,
-        /** Available preset names */
-        presetNames: Object.keys(presets) as PresetName[],
-    };
+    // Switch Monaco editor theme
+    try {
+      MonacoModule.editor.setTheme(isDark ? "vs-dark" : "vs");
+    } catch {
+      // Monaco may not be loaded yet — ignore
+    }
+  };
+
+  // Sync dark mode on mount
+  watch(
+    darkMode,
+    (isDark) => {
+      applyDarkMode(isDark);
+    },
+    { immediate: true },
+  );
+
+  return {
+    /** Reactive ref to the active preset name */
+    currentPreset,
+    /** Reactive ref to dark mode state */
+    darkMode,
+    /** Switch to a different PrimeVue preset by name */
+    switchPreset,
+    /** Toggle or set dark mode */
+    toggleDarkMode,
+    /** Available preset names */
+    presetNames: Object.keys(presets) as PresetName[],
+  };
 }

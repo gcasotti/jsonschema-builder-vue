@@ -23,15 +23,15 @@ export interface MonacoEditorOptions {
   renderLineHighlight?: "all" | "line" | "none" | "gutter";
   matchBrackets?: "always" | "near" | "never";
   autoClosingBrackets?:
-  | "always"
-  | "languageDefined"
-  | "beforeWhitespace"
-  | "never";
+    | "always"
+    | "languageDefined"
+    | "beforeWhitespace"
+    | "never";
   autoClosingQuotes?:
-  | "always"
-  | "languageDefined"
-  | "beforeWhitespace"
-  | "never";
+    | "always"
+    | "languageDefined"
+    | "beforeWhitespace"
+    | "never";
   guides?: {
     bracketPairs?: boolean;
     indentation?: boolean;
@@ -156,26 +156,26 @@ export function useMonacoTheme() {
       enableSchemaRequest: true,
       schemas: schema
         ? [
-          {
-            uri:
-              typeof schema === "object" && schema.$id
-                ? schema.$id
-                : "https://jsonjoy-builder/schema",
-            fileMatch: ["*"],
-            schema,
-          },
-        ]
-        : [
-          {
-            uri: "http://json-schema.org/draft-07/schema",
-            fileMatch: ["*"],
-            schema: {
-              $schema: "http://json-schema.org/draft-07/schema",
-              type: "object",
-              additionalProperties: true,
+            {
+              uri:
+                typeof schema === "object" && schema.$id
+                  ? schema.$id
+                  : "https://jsonjoy-builder/schema",
+              fileMatch: ["*"],
+              schema,
             },
-          },
-        ],
+          ]
+        : [
+            {
+              uri: "http://json-schema.org/draft-07/schema",
+              fileMatch: ["*"],
+              schema: {
+                $schema: "http://json-schema.org/draft-07/schema",
+                type: "object",
+                additionalProperties: true,
+              },
+            },
+          ],
     };
 
     MonacoModule.json.jsonDefaults.setDiagnosticsOptions(diagnosticsOptions);
