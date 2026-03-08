@@ -119,10 +119,14 @@ const handleDelete = () => {
   <div
     :class="
       cn(
-        'mb-2 rounded-lg border transition-colors duration-200',
-        depth > 0 && 'ml-0 sm:ml-4 border-l border-l-border/40',
+        'mb-2 rounded-lg transition-colors duration-200',
+        depth > 0 && 'ml-0 sm:ml-4',
       )
     "
+    :style="{
+      border: '1px solid var(--p-content-border-color)',
+      borderLeftColor: depth > 0 ? 'var(--p-content-border-color)' : undefined,
+    }"
   >
     <div class="relative json-field-row justify-between group">
       <div class="flex items-center gap-2 grow min-w-0">
@@ -201,7 +205,7 @@ const handleDelete = () => {
             <!-- Required toggle -->
             <ButtonToggle
               @click="handleRequiredToggle"
-              :class="required ? 'bg-red-50 text-red-500' : 'bg-secondary text-muted-foreground'"
+              :class="required ? 'bg-red-500/10 text-red-500' : 'bg-secondary text-muted-foreground'"
             >
               {{ required ? t.propertyRequired : t.propertyOptional }}
             </ButtonToggle>
