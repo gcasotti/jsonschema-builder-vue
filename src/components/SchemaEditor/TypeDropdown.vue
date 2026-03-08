@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import PSelect from "primevue/select";
 import { computed } from "vue";
-import { useOverlayContainer } from "../../hooks/use-overlay-container.ts";
 import { useTranslation } from "../../hooks/use-translation.ts";
 import { getTypeColor, getTypeLabel } from "../../lib/utils.ts";
 import type { SchemaType } from "../../types/jsonSchema.ts";
@@ -20,7 +19,6 @@ const emit = defineEmits<{
 }>();
 
 const t = useTranslation();
-const { overlayContainer } = useOverlayContainer();
 
 const typeOptions: SchemaType[] = [
   "string",
@@ -56,12 +54,13 @@ const handleChange = (event: { value: string }) => {
     optionLabel="label"
     optionValue="value"
     :disabled="readOnly"
-    :appendTo="overlayContainer"
+    appendTo="body"
     :class="['text-xs', $props.class]"
     :pt="{
       root: { style: 'min-width: 92px; padding: 0.25rem 0.5rem; font-size: 0.75rem;' },
       label: { style: 'padding: 0.25rem 0; font-size: 0.75rem; font-weight: 500;', class: selectedOption?.color },
       option: { style: 'font-size: 0.75rem; padding: 0.375rem 0.75rem;' },
+      overlay: { class: 'jscb' },
     }"
   >
     <template #option="{ option }">

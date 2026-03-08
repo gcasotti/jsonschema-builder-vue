@@ -12,46 +12,52 @@ import { onScopeDispose, ref } from "vue";
  */
 
 let sharedContainer: HTMLElement | null = null;
+let sharedStyle: HTMLStyleElement | null = null;
 let refCount = 0;
 
 function getOrCreateContainer(): HTMLElement {
-    if (!sharedContainer) {
-        sharedContainer = document.createElement("div");
-        sharedContainer.classList.add("jscb");
-        sharedContainer.setAttribute("data-jscb-overlay-container", "");
-        // Ensure the container doesn't interfere with page layout
-        sharedContainer.style.position = "absolute";
-        sharedContainer.style.top = "0";
-        sharedContainer.style.left = "0";
-        sharedContainer.style.width = "0";
-        sharedContainer.style.height = "0";
-        sharedContainer.style.overflow = "visible";
-        sharedContainer.style.pointerEvents = "none";
-        sharedContainer.style.zIndex = "9999";
-        document.body.appendChild(sharedContainer);
-    }
-    refCount++;
-    return sharedContainer;
+  if (!sharedContainer) {
+    sharedContainer = document.createElement("div");
+    sharedContainer.classList.add("jscb");
+    sharedContainer.setAttribute("data-jscb-overlay-container", "");
+    document.body.appendChild(sharedContainer);
+
+    // Inject a style so the container itself doesn't interfere
+    // with page layout but its children (PrimeVue overlays) are interactive
+    sharedStyle = document.createElement("style");
+    sharedStyle.textContent = [
+      "[data-jscb-overlay-container] {",
+      "  position: relative;",
+      "  width: 0;",
+      "  height: 0;",
+      "}",
+    ].join("\n");
+    document.head.appendChild(sharedStyle);
+  }
+  refCount++;
+  return sharedContainer;
 }
 
 function releaseContainer(): void {
-    refCount--;
-    if (refCount <= 0 && sharedContainer) {
-        sharedContainer.remove();
-        sharedContainer = null;
-        refCount = 0;
-    }
+  refCount--;
+  if (refCount <= 0) {
+    sharedContainer?.remove();
+    sharedContainer = null;
+    sharedStyle?.remove();
+    sharedStyle = null;
+    refCount = 0;
+  }
 }
 
 export function useOverlayContainer() {
-    const container = ref<HTMLElement>(getOrCreateContainer());
+  const container = ref<HTMLElement>(getOrCreateContainer());
 
-    onScopeDispose(() => {
-        releaseContainer();
-    });
+  onScopeDispose(() => {
+    releaseContainer();
+  });
 
-    return {
-        /** Pass this to PrimeVue's `appendTo` prop */
-        overlayContainer: container,
-    };
+  return {
+    /** Pass this to PrimeVue's `appendTo` prop */
+    overlayContainer: container,
+  };
 }
