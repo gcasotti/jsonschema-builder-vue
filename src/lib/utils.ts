@@ -11,18 +11,18 @@ export function cn(...inputs: ClassValue[]) {
 export const getTypeColor = (type: SchemaType): string => {
   switch (type) {
     case "string":
-      return "text-blue-500 bg-blue-50";
+      return "text-blue-500 bg-blue-500/10";
     case "number":
     case "integer":
-      return "text-purple-500 bg-purple-50";
+      return "text-purple-500 bg-purple-500/10";
     case "boolean":
-      return "text-green-500 bg-green-50";
+      return "text-green-500 bg-green-500/10";
     case "object":
-      return "text-orange-500 bg-orange-50";
+      return "text-orange-500 bg-orange-500/10";
     case "array":
-      return "text-pink-500 bg-pink-50";
+      return "text-pink-500 bg-pink-500/10";
     case "null":
-      return "text-gray-500 bg-gray-50";
+      return "text-gray-500 bg-gray-500/10";
   }
 };
 
