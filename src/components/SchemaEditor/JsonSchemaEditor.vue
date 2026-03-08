@@ -126,7 +126,7 @@ const handleMouseUp = () => {
 </script>
 
 <template>
-  <div :class="cn('json-editor-container w-full', fullscreenClass(), props.class, 'jsonjoy')">
+  <div :class="cn('json-editor-container w-full', fullscreenClass(), props.class, 'jscb')">
     <!-- Visual-only mode (no JSON editor) -->
     <template v-if="!showJsonEditor">
       <div :class="cn('w-full flex flex-col', isFullscreen ? 'h-screen' : 'h-[600px]')">

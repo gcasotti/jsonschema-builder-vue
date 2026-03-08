@@ -26,7 +26,7 @@ const hasFields = () =>
 </script>
 
 <template>
-  <div class="p-4 h-full flex flex-col overflow-auto jsonjoy">
+  <div class="p-4 h-full flex flex-col overflow-auto jscb">
     <div v-if="!readOnly" class="mb-6 shrink-0">
       <AddFieldButton :path="[]" />
     </div>

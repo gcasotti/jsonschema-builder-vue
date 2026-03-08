@@ -80,8 +80,8 @@ const errorCount = computed(() => validationResult.value?.errors?.length || 0);
   <component :is="isDialog ? Dialog : 'div'"
     v-bind="isDialog ? {
       visible: props.visible ?? false,
-      class: 'md:max-w-[700px] max-h-[80vh] w-[95vw] jsonjoy',
-    } : { class: 'space-y-4 jsonjoy' }"
+      class: 'md:max-w-[700px] max-h-[80vh] w-[95vw] jscb',
+    } : { class: 'space-y-4 jscb' }"
     @update:visible="isDialog && emit('update:visible', $event)"
   >
     <template v-if="isDialog" #header>

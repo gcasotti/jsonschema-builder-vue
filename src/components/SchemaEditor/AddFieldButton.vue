@@ -72,7 +72,7 @@ const handleSubmit = (e: Event) => {
   <Dialog
     :visible="dialogOpen"
     @update:visible="dialogOpen = $event"
-    class="md:max-w-[1200px] max-h-[85vh] w-[95vw] p-4 sm:p-6 jsonjoy"
+    class="md:max-w-[1200px] max-h-[85vh] w-[95vw] p-4 sm:p-6 jscb"
   >
     <template #header>
       <div class="mb-4">

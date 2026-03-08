@@ -57,7 +57,7 @@ const handleDownload = () => {
 </script>
 
 <template>
-  <div :class="cn('relative overflow-hidden h-full flex flex-col', props.class, 'jsonjoy')">
+  <div :class="cn('relative overflow-hidden h-full flex flex-col', props.class, 'jscb')">
     <div
       class="flex items-center justify-between bg-secondary/80 backdrop-blur-xs px-4 py-2 border-b shrink-0"
     >

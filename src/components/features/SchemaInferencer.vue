@@ -75,7 +75,7 @@ const handleInfer = () => {
     v-if="isDialog"
     :visible="props.visible ?? false"
     @update:visible="emit('update:visible', $event)"
-    class="md:max-w-[700px] max-h-[80vh] w-[95vw] jsonjoy"
+    class="md:max-w-[700px] max-h-[80vh] w-[95vw] jscb"
   >
     <template #header>
       <div class="mb-2">
@@ -104,7 +104,7 @@ const handleInfer = () => {
   </Dialog>
 
   <!-- Inline mode (when :visible is not provided) -->
-  <div v-else class="space-y-4 jsonjoy">
+  <div v-else class="space-y-4 jscb">
     <div class="border rounded-md h-[300px] overflow-hidden">
       <MonacoEditor ref="monacoRef" v-model="editorText" language="json" />
     </div>
