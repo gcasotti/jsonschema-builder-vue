@@ -151,10 +151,17 @@ const runInfer = () => {
 };
 
 const validUtilInput = ref('{ "name": "Bob", "age": "not a number" }');
+const validUtilSchema: JSONSchema = {
+  type: "object",
+  properties: {
+    name: { type: "string" },
+    age: { type: "number" },
+  },
+};
 const validUtilOutput = ref("");
 const runValidate = () => {
   import("../../src/utils/jsonValidator.ts").then((m) => {
-    const result = m.validateJson(validUtilInput.value, schema.value);
+    const result = m.validateJson(validUtilInput.value, validUtilSchema);
     validUtilOutput.value = result.valid
       ? "✓ Valid"
       : result.errors?.map((e) => `✗ ${e.path}: ${e.message}`).join("\n");
