@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import hljs from "highlight.js/lib/core";
+import typescript from "highlight.js/lib/languages/typescript";
+import xml from "highlight.js/lib/languages/xml";
 import { Check, Clipboard, Code2, Eye } from "lucide-vue-next";
-import Tabs from "primevue/tabs";
 import Tab from "primevue/tab";
 import TabList from "primevue/tablist";
-import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
-import { computed, ref, watch, onBeforeUnmount } from "vue";
-import hljs from "highlight.js/lib/core";
-import xml from "highlight.js/lib/languages/xml";
-import typescript from "highlight.js/lib/languages/typescript";
+import TabPanels from "primevue/tabpanels";
+import Tabs from "primevue/tabs";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
 import "highlight.js/styles/github.min.css";
 
 hljs.registerLanguage("xml", xml);
