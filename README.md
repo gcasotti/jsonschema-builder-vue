@@ -49,38 +49,69 @@ const schema = ref<JSONSchema>({});
 </template>
 ```
 
-### Styling
+### Theming
 
-To style the component, add custom CSS. For basic styling, there are some CSS custom properties ("variables")
-you can set:
+The library uses PrimeVue's styled theming system. Out of the box, four presets are available:
 
-```css
-.jsonjoy {
-  --jsonjoy-background: #f8fafc;
-  --jsonjoy-foreground: #020817;
-  --jsonjoy-card: #fff;
-  --jsonjoy-card-foreground: #020817;
-  --jsonjoy-popover: #fff;
-  --jsonjoy-popover-foreground: #020817;
-  --jsonjoy-primary: #0080ff;
-  --jsonjoy-primary-foreground: #f8fafc;
-  --jsonjoy-secondary: #f1f5f9;
-  --jsonjoy-secondary-foreground: #0f172a;
-  --jsonjoy-muted: #f1f5f9;
-  --jsonjoy-muted-foreground: #64748b;
-  --jsonjoy-accent: #f1f5f9;
-  --jsonjoy-accent-foreground: #0f172a;
-  --jsonjoy-destructive: #ef4444;
-  --jsonjoy-destructive-foreground: #f8fafc;
-  --jsonjoy-border: #e2e8f0;
-  --jsonjoy-input: #e2e8f0;
-  --jsonjoy-ring: #020817;
-  --jsonjoy-radius: .8rem;
-  --jsonjoy-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-.jsonjoy.dark {
-  /** same, but for dark mode */
-}
+| Preset | Look & Feel |
+|--------|-------------|
+| `auraPreset` | Default — rounded, blue-tinted (Aura) |
+| `materialPreset` | Material Design 3 |
+| `noraPreset` | Minimal / flat |
+| `laraPreset` | Classic PrimeVue |
+
+#### Setup
+
+Pass a preset when installing PrimeVue:
+
+```ts
+import PrimeVue from "primevue/config";
+import { auraPreset } from "jsonschema-builder-vue";
+
+app.use(PrimeVue, { theme: { preset: auraPreset } });
+```
+
+#### Runtime theme switching
+
+Use the `useTheme` composable anywhere inside a component tree with PrimeVue installed:
+
+```vue
+<script setup lang="ts">
+import { useTheme } from "jsonschema-builder-vue";
+
+const { switchPreset, toggleDarkMode, currentPreset, darkMode } = useTheme();
+
+// Switch to Material Design
+switchPreset("material");
+
+// Toggle dark mode
+toggleDarkMode();
+</script>
+```
+
+#### Custom CSS variables
+
+All design tokens are scoped under `.jscb` and prefixed with `--jscb-*`.
+You can override them to fine-tune the look:
+
+Dark mode is toggled by adding the `.jscb-dark` class to `<html>`:
+
+```ts
+// Use the built-in composable
+const { toggleDarkMode, darkMode } = useTheme();
+toggleDarkMode();       // toggle
+toggleDarkMode(true);   // force dark
+```
+
+PrimeVue's `darkModeSelector` must match:
+
+```ts
+app.use(PrimeVue, {
+  theme: {
+    preset: auraPreset,
+    options: { darkModeSelector: ".jscb-dark" },
+  },
+});
 ```
 
 ### Localization
@@ -175,7 +206,7 @@ Validate any JSON document against your schema with:
 ## Technology Stack
 
 - **Vue 3**: UI framework (Composition API, `<script setup>`)
-- **PrimeVue**: Component library (Aura theme)
+- **PrimeVue**: Component library with built-in theming (Aura, Material, Nora, Lara presets)
 - **TypeScript**: Type-safe development
 - **Rsbuild** / **Rslib**: Build tool and development server
 - **Monaco Editor**: Code editor for JSON viewing/editing
