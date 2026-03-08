@@ -10,8 +10,20 @@ A modern, Vue 3 + PrimeVue visual JSON Schema editor for creating and manipulati
 
 **Repository**: https://github.com/gcasotti/jsonschema-builder-vue
 
-[![NPM Version](https://img.shields.io/npm/v/jsonschema-builder-vue)](https://www.npmjs.com/package/jsonschema-builder-vue)
-[![NPM License](https://img.shields.io/npm/l/jsonschema-builder-vue)](https://www.npmjs.com/package/jsonschema-builder-vue)
+[![NPM Version](https://img.shields.io/npm/v/jsonschema-builder-vue?v=1)](https://www.npmjs.com/package/jsonschema-builder-vue)
+[![NPM Downloads](https://img.shields.io/npm/dm/jsonschema-builder-vue?v=1)](https://www.npmjs.com/package/jsonschema-builder-vue)
+[![NPM License](https://img.shields.io/npm/l/jsonschema-builder-vue?v=1)](https://www.npmjs.com/package/jsonschema-builder-vue)
+
+[![GitHub Repo](https://img.shields.io/badge/github-repository-blue?v=1)](https://github.com/gcasotti/jsonjoy-builder-vue)
+[![GitHub Stars](https://img.shields.io/github/stars/gcasotti/jsonjoy-builder-vue?v=1)](https://github.com/gcasotti/jsonjoy-builder-vue/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/gcasotti/jsonjoy-builder-vue?v=1)](https://github.com/gcasotti/jsonjoy-builder-vue/issues)
+
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/jsonschema-builder-vue?v=1)](https://bundlephobia.com/package/jsonschema-builder-vue)
+[![Types](https://img.shields.io/npm/types/jsonschema-builder-vue?v=1)](https://www.npmjs.com/package/jsonschema-builder-vue)
+
+[![CI](https://img.shields.io/github/actions/workflow/status/gcasotti/jsonjoy-builder-vue/test.yml?v=1)](https://github.com/gcasotti/jsonjoy-builder-vue/actions)
+
+[![Demo](https://img.shields.io/badge/demo-live-blue?v=1)](https://gcasotti.github.io/jsonjoy-builder-vue/)
 
 ## Features
 
