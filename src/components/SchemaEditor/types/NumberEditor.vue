@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { X } from "lucide-vue-next";
+import Chip from "primevue/chip";
+import InputNumber from "primevue/inputnumber";
 import { computed, ref, useId } from "vue";
-import InputField from "../../../components/ui/InputField.vue";
-import Label from "../../../components/ui/Label.vue";
+import Button from "../../../components/ui/Button.vue";
 import { useTranslation } from "../../../hooks/use-translation.ts";
-import { cn } from "../../../lib/utils.ts";
 import type { ObjectJSONSchema } from "../../../types/jsonSchema.ts";
 import {
   isBooleanSchema,
@@ -166,88 +165,142 @@ const hasConstraint = computed(
     !!multipleOf.value ||
     enumValues.value.length > 0,
 );
+
+const minimumValue = computed(() => minimum.value ?? null);
+const maximumValue = computed(() => maximum.value ?? null);
+const exclusiveMinimumValue = computed(() => exclusiveMinimum.value ?? null);
+const exclusiveMaximumValue = computed(() => exclusiveMaximum.value ?? null);
+const multipleOfValue = computed(() => multipleOf.value ?? null);
 </script>
 
 <template>
   <div class="space-y-4">
-    <p v-if="readOnly && !hasConstraint" class="text-sm text-muted-foreground italic">
+    <p v-if="readOnly && !hasConstraint" class="text-sm italic" style="color: var(--p-text-muted-color);">
       {{ t.numberNoConstraint }}
     </p>
 
     <div v-if="!readOnly || hasConstraint" class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="space-y-0 md:col-span-2">
-        <div v-if="!!minMaxError" class="text-xs text-destructive italic">{{ minMaxError }}</div>
-        <div v-if="!!redundantMinError" class="text-xs text-destructive italic">{{ redundantMinError }}</div>
-        <div v-if="!!redundantMaxError" class="text-xs text-destructive italic">{{ redundantMaxError }}</div>
-        <div v-if="!!enumError" class="text-xs text-destructive italic">{{ enumError }}</div>
+        <div v-if="!!minMaxError" class="text-xs text-red-500 italic">{{ minMaxError }}</div>
+        <div v-if="!!redundantMinError" class="text-xs text-red-500 italic">{{ redundantMinError }}</div>
+        <div v-if="!!redundantMaxError" class="text-xs text-red-500 italic">{{ redundantMaxError }}</div>
+        <div v-if="!!enumError" class="text-xs text-red-500 italic">{{ enumError }}</div>
       </div>
 
-      <div v-if="!readOnly || !!minimum" class="space-y-2">
-        <Label :for="minimumId" :class="minimum !== undefined && (!!minMaxError || !!redundantMinError) && 'text-destructive'">
+      <div v-if="!readOnly || !!minimum" class="flex flex-col gap-2">
+        <label :for="minimumId" :class="['text-sm font-medium', minimum !== undefined && (!!minMaxError || !!redundantMinError) && 'text-red-500']">
           {{ t.numberMinimumLabel }}
-        </Label>
-        <InputField :id="minimumId" type="number" :model-value="minimum !== undefined ? String(minimum) : ''"
-          @update:model-value="(v: string) => handleValidationChange('minimum', v ? Number(v) : undefined)"
+        </label>
+        <InputNumber
+          :inputId="minimumId"
+          :modelValue="minimumValue"
+          @update:modelValue="(v: number | null) => handleValidationChange('minimum', v ?? undefined)"
           :placeholder="t.numberMinimumPlaceholder"
-          :class="cn('h-8', minimum !== undefined && (!!minMaxError || !!redundantMinError) && 'border-destructive')"
-          :step="integer ? 1 : 'any'" />
+          :step="integer ? 1 : undefined"
+          :invalid="minimum !== undefined && (!!minMaxError || !!redundantMinError)"
+          :disabled="readOnly"
+          fluid
+          size="small"
+          showButtons
+        />
       </div>
 
-      <div v-if="!readOnly || !!maximum" class="space-y-2">
-        <Label :for="maximumId" :class="maximum !== undefined && (!!minMaxError || !!redundantMaxError) && 'text-destructive'">
+      <div v-if="!readOnly || !!maximum" class="flex flex-col gap-2">
+        <label :for="maximumId" :class="['text-sm font-medium', maximum !== undefined && (!!minMaxError || !!redundantMaxError) && 'text-red-500']">
           {{ t.numberMaximumLabel }}
-        </Label>
-        <InputField :id="maximumId" type="number" :model-value="maximum !== undefined ? String(maximum) : ''"
-          @update:model-value="(v: string) => handleValidationChange('maximum', v ? Number(v) : undefined)"
+        </label>
+        <InputNumber
+          :inputId="maximumId"
+          :modelValue="maximumValue"
+          @update:modelValue="(v: number | null) => handleValidationChange('maximum', v ?? undefined)"
           :placeholder="t.numberMaximumPlaceholder"
-          :class="cn('h-8', maximum !== undefined && (!!minMaxError || !!redundantMaxError) && 'border-destructive')"
-          :step="integer ? 1 : 'any'" />
+          :step="integer ? 1 : undefined"
+          :invalid="maximum !== undefined && (!!minMaxError || !!redundantMaxError)"
+          :disabled="readOnly"
+          fluid
+          size="small"
+          showButtons
+        />
       </div>
     </div>
 
     <div v-if="!readOnly || !!exclusiveMaximum || !!exclusiveMinimum" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div v-if="!readOnly || !!exclusiveMinimum" class="space-y-2">
-        <Label :for="exclusiveMinimumId">{{ t.numberExclusiveMinimumLabel }}</Label>
-        <InputField :id="exclusiveMinimumId" type="number" :model-value="exclusiveMinimum !== undefined ? String(exclusiveMinimum) : ''"
-          @update:model-value="(v: string) => handleValidationChange('exclusiveMinimum', v ? Number(v) : undefined)"
-          :placeholder="t.numberExclusiveMinimumPlaceholder" class="h-8" :step="integer ? 1 : 'any'" />
+      <div v-if="!readOnly || !!exclusiveMinimum" class="flex flex-col gap-2">
+        <label :for="exclusiveMinimumId" class="text-sm font-medium">{{ t.numberExclusiveMinimumLabel }}</label>
+        <InputNumber
+          :inputId="exclusiveMinimumId"
+          :modelValue="exclusiveMinimumValue"
+          @update:modelValue="(v: number | null) => handleValidationChange('exclusiveMinimum', v ?? undefined)"
+          :placeholder="t.numberExclusiveMinimumPlaceholder"
+          :step="integer ? 1 : undefined"
+          :disabled="readOnly"
+          fluid
+          size="small"
+          showButtons
+        />
       </div>
-      <div v-if="!readOnly || !!exclusiveMaximum" class="space-y-2">
-        <Label :for="exclusiveMaximumId">{{ t.numberExclusiveMaximumLabel }}</Label>
-        <InputField :id="exclusiveMaximumId" type="number" :model-value="exclusiveMaximum !== undefined ? String(exclusiveMaximum) : ''"
-          @update:model-value="(v: string) => handleValidationChange('exclusiveMaximum', v ? Number(v) : undefined)"
-          :placeholder="t.numberExclusiveMaximumPlaceholder" class="h-8" :step="integer ? 1 : 'any'" />
+      <div v-if="!readOnly || !!exclusiveMaximum" class="flex flex-col gap-2">
+        <label :for="exclusiveMaximumId" class="text-sm font-medium">{{ t.numberExclusiveMaximumLabel }}</label>
+        <InputNumber
+          :inputId="exclusiveMaximumId"
+          :modelValue="exclusiveMaximumValue"
+          @update:modelValue="(v: number | null) => handleValidationChange('exclusiveMaximum', v ?? undefined)"
+          :placeholder="t.numberExclusiveMaximumPlaceholder"
+          :step="integer ? 1 : undefined"
+          :disabled="readOnly"
+          fluid
+          size="small"
+          showButtons
+        />
       </div>
     </div>
 
-    <div v-if="!readOnly || !!multipleOf" class="space-y-2">
-      <Label :for="multipleOfId" :class="!!multipleOfError && 'text-destructive'">{{ t.numberMultipleOfLabel }}</Label>
-      <InputField :id="multipleOfId" type="number" :model-value="multipleOf !== undefined ? String(multipleOf) : ''"
-        @update:model-value="(v: string) => handleValidationChange('multipleOf', v ? Number(v) : undefined)"
-        :placeholder="t.numberMultipleOfPlaceholder" :class="cn('h-8', !!multipleOfError && 'border-destructive')"
-        :min="0" :step="integer ? 1 : 'any'" />
-      <div v-if="!!multipleOfError" class="text-xs text-destructive italic whitespace-pre-line">{{ multipleOfError }}</div>
+    <div v-if="!readOnly || !!multipleOf" class="flex flex-col gap-2">
+      <label :for="multipleOfId" :class="['text-sm font-medium', !!multipleOfError && 'text-red-500']">{{ t.numberMultipleOfLabel }}</label>
+      <InputNumber
+        :inputId="multipleOfId"
+        :modelValue="multipleOfValue"
+        @update:modelValue="(v: number | null) => handleValidationChange('multipleOf', v ?? undefined)"
+        :placeholder="t.numberMultipleOfPlaceholder"
+        :min="0"
+        :step="integer ? 1 : undefined"
+        :invalid="!!multipleOfError"
+        :disabled="readOnly"
+        fluid
+        size="small"
+        showButtons
+      />
+      <div v-if="!!multipleOfError" class="text-xs text-red-500 italic whitespace-pre-line">{{ multipleOfError }}</div>
     </div>
 
-    <div v-if="!readOnly || enumValues.length > 0" class="space-y-2 pt-2 border-t border-border/40">
-      <Label :class="!!enumError && 'text-destructive'">{{ t.numberAllowedValuesEnumLabel }}</Label>
+    <div v-if="!readOnly || enumValues.length > 0" class="space-y-2 pt-2 border-t" style="border-color: var(--p-content-border-color);">
+      <label :class="['text-sm font-medium', !!enumError && 'text-red-500']">{{ t.numberAllowedValuesEnumLabel }}</label>
       <div class="flex flex-wrap gap-2 mb-4">
         <template v-if="enumValues.length > 0">
-          <div v-for="(value, index) in enumValues" :key="`enum-number-${value}`" class="flex items-center bg-muted/40 border rounded-md px-2 py-1 text-xs">
-            <span class="mr-1">{{ value }}</span>
-            <button type="button" @click="handleRemoveEnumValue(index)" class="text-muted-foreground hover:text-destructive">
-              <X :size="12" />
-            </button>
-          </div>
+          <Chip
+            v-for="(value, index) in enumValues"
+            :key="`enum-number-${value}`"
+            :label="String(value)"
+            removable
+            @remove="handleRemoveEnumValue(index)"
+          />
         </template>
-        <p v-else class="text-xs text-muted-foreground italic">{{ t.numberAllowedValuesEnumNone }}</p>
+        <p v-else class="text-xs italic" style="color: var(--p-text-muted-color);">{{ t.numberAllowedValuesEnumNone }}</p>
       </div>
       <div class="flex items-center gap-2">
-        <InputField type="number" v-model="enumValue" :placeholder="t.numberAllowedValuesEnumAddPlaceholder" class="h-8 text-xs flex-1"
-          @keydown="$event.key === 'Enter' && handleAddEnumValue()" :step="integer ? 1 : 'any'" />
-        <button type="button" @click="handleAddEnumValue()" class="px-3 py-1 h-8 rounded-md bg-secondary text-xs font-medium hover:bg-secondary/80">
+        <InputNumber
+          :modelValue="enumValue ? Number(enumValue) : null"
+          @update:modelValue="(v: number | null) => { enumValue = v !== null ? String(v) : ''; }"
+          :placeholder="t.numberAllowedValuesEnumAddPlaceholder"
+          :step="integer ? 1 : undefined"
+          fluid
+          size="small"
+          showButtons
+          @keydown="($event as KeyboardEvent).key === 'Enter' && handleAddEnumValue()"
+        />
+        <Button type="button" @click="handleAddEnumValue()" size="small" severity="secondary">
           {{ t.numberAllowedValuesEnumAddLabel }}
-        </button>
+        </Button>
       </div>
     </div>
   </div>

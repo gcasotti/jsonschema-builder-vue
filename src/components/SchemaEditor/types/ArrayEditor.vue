@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import InputNumber from "primevue/inputnumber";
 import { computed, ref, useId } from "vue";
-import InputField from "../../../components/ui/InputField.vue";
 import Label from "../../../components/ui/Label.vue";
 import Switch from "../../../components/ui/Switch.vue";
 import { useTranslation } from "../../../hooks/use-translation.ts";
 import { getArrayItemsSchema } from "../../../lib/schemaEditor.ts";
-import { cn } from "../../../lib/utils.ts";
 import type {
   ObjectJSONSchema,
   SchemaType,
@@ -34,11 +33,11 @@ const emit = defineEmits<{
 }>();
 
 const t = useTranslation();
-const minItems = ref<number | undefined>(
-  withObjectSchema(props.schema, (s) => s.minItems, undefined),
+const minItems = ref<number | null>(
+  withObjectSchema(props.schema, (s) => s.minItems ?? null, null),
 );
-const maxItems = ref<number | undefined>(
-  withObjectSchema(props.schema, (s) => s.maxItems, undefined),
+const maxItems = ref<number | null>(
+  withObjectSchema(props.schema, (s) => s.maxItems ?? null, null),
 );
 const uniqueItems = ref(
   withObjectSchema(props.schema, (s) => s.uniqueItems || false, false),
@@ -73,8 +72,8 @@ const buildValidationProps = (
   const validationProps: ObjectJSONSchema = {
     type: "array",
     ...base,
-    minItems: overrides.minItems ?? minItems.value,
-    maxItems: overrides.maxItems ?? maxItems.value,
+    minItems: overrides.minItems ?? (minItems.value ?? undefined),
+    maxItems: overrides.maxItems ?? (maxItems.value ?? undefined),
     uniqueItems: (overrides.uniqueItems ?? uniqueItems.value) || undefined,
   };
 
@@ -135,29 +134,43 @@ const maxItemsError = computed(
 <template>
   <div class="space-y-6">
     <div v-if="!readOnly || !!maxItems || !!minItems" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div v-if="!readOnly || !!minItems" class="space-y-2">
-        <Label :for="minItemsId" :class="(!!minMaxError || !!minItemsError) && 'text-destructive'">
+      <div v-if="!readOnly || !!minItems" class="flex flex-col gap-2">
+        <label :for="minItemsId" :class="['text-sm font-medium', (!!minMaxError || !!minItemsError) && 'text-red-500']">
           {{ t.arrayMinimumLabel }}
-        </Label>
-        <InputField :id="minItemsId" type="number" :min="0"
-          :model-value="minItems !== undefined ? String(minItems) : ''"
-          @update:model-value="(v: string) => { minItems = v ? Number(v) : undefined; }"
+        </label>
+        <InputNumber
+          :inputId="minItemsId"
+          :modelValue="minItems"
+          @update:modelValue="(v: number | null) => { minItems = v; }"
           @blur="handleValidationChange()"
           :placeholder="t.arrayMinimumPlaceholder"
-          :class="cn('h-8', !!minMaxError && 'border-destructive')" />
+          :min="0"
+          :invalid="!!minMaxError || !!minItemsError"
+          :disabled="readOnly"
+          fluid
+          size="small"
+          showButtons
+        />
       </div>
-      <div v-if="!readOnly || !!maxItems" class="space-y-2">
-        <Label :for="maxItemsId" :class="(!!minMaxError || !!maxItemsError) && 'text-destructive'">
+      <div v-if="!readOnly || !!maxItems" class="flex flex-col gap-2">
+        <label :for="maxItemsId" :class="['text-sm font-medium', (!!minMaxError || !!maxItemsError) && 'text-red-500']">
           {{ t.arrayMaximumLabel }}
-        </Label>
-        <InputField :id="maxItemsId" type="number" :min="0"
-          :model-value="maxItems !== undefined ? String(maxItems) : ''"
-          @update:model-value="(v: string) => { maxItems = v ? Number(v) : undefined; }"
+        </label>
+        <InputNumber
+          :inputId="maxItemsId"
+          :modelValue="maxItems"
+          @update:modelValue="(v: number | null) => { maxItems = v; }"
           @blur="handleValidationChange()"
           :placeholder="t.arrayMaximumPlaceholder"
-          :class="cn('h-8', !!minMaxError && 'border-destructive')" />
+          :min="0"
+          :invalid="!!minMaxError || !!maxItemsError"
+          :disabled="readOnly"
+          fluid
+          size="small"
+          showButtons
+        />
       </div>
-      <div v-if="!!minMaxError || !!minItemsError || !!maxItemsError" class="text-xs text-destructive italic md:col-span-2 whitespace-pre-line">
+      <div v-if="!!minMaxError || !!minItemsError || !!maxItemsError" class="text-xs text-red-500 italic md:col-span-2 whitespace-pre-line">
         {{ [minMaxError, minItemsError ?? maxItemsError].filter(Boolean).join("\n") }}
       </div>
     </div>
@@ -168,7 +181,7 @@ const maxItemsError = computed(
       <Label :for="uniqueItemsId" class="cursor-pointer">{{ t.arrayForceUniqueItemsLabel }}</Label>
     </div>
 
-    <div :class="cn('space-y-2 pt-4 border-border/40', (!readOnly || !!minItems || !!maxItems || !!uniqueItems) ? 'border-t' : null)">
+    <div class="space-y-2 pt-4" :style="(!readOnly || !!minItems || !!maxItems || !!uniqueItems) ? 'border-top: 1px solid var(--p-content-border-color)' : ''">
       <div class="flex items-center justify-between mb-4">
         <Label>{{ t.arrayItemTypeLabel }}</Label>
         <TypeDropdown
