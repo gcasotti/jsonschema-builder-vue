@@ -16,7 +16,9 @@
   "private": false,
   "version": "0.4.6",
   "type": "module",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gcasotti/jsonschema-builder-vue.git"

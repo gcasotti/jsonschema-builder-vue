@@ -26,9 +26,7 @@ export default defineConfig(
           emptyOutDir: true,
         },
         define: {
-          __BASE_PATH__: JSON.stringify(
-            process.env.PUBLIC_BASE_PATH || "/",
-          ),
+          __BASE_PATH__: JSON.stringify(process.env.PUBLIC_BASE_PATH || "/"),
         },
       }
     : {
