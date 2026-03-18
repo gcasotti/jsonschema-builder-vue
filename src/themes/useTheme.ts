@@ -4,7 +4,6 @@
  * Provides reactive state for the active PrimeVue preset and dark-mode,
  * and functions to switch between them at runtime.
  */
-import * as MonacoModule from "monaco-editor";
 import { usePrimeVue } from "primevue/config";
 import { ref, watch } from "vue";
 import { type PresetName, presets } from "./presets.ts";
@@ -52,7 +51,7 @@ export function useTheme() {
    * Apply dark mode:
    * 1. Toggle .jscb-dark on <html> (PrimeVue dark token selector)
    * 2. Toggle .dark on all .jscb containers (for scoped Tailwind utilities)
-   * 3. Switch Monaco editor theme
+   * 3. Switch Monaco editor theme (lazy — only loaded if Monaco is available)
    */
   const applyDarkMode = (isDark: boolean) => {
     // PrimeVue dark mode: toggle on <html> so :root matches
@@ -72,12 +71,12 @@ export function useTheme() {
       el.classList.toggle("dark", isDark);
     }
 
-    // Switch Monaco editor theme
-    try {
-      MonacoModule.editor.setTheme(isDark ? "vs-dark" : "vs");
-    } catch {
-      // Monaco may not be loaded yet — ignore
-    }
+    // Switch Monaco editor theme (dynamic import — no-op if Monaco is not installed)
+    import("monaco-editor")
+      .then((m) => m.editor.setTheme(isDark ? "vs-dark" : "vs"))
+      .catch(() => {
+        // Monaco is not available — ignore
+      });
   };
 
   // Sync dark mode on mount

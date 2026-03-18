@@ -1,6 +1,5 @@
 import type * as Monaco from "monaco-editor";
 import type { json as MonacoJson } from "monaco-editor";
-import * as MonacoModule from "monaco-editor";
 import { onMounted, onUnmounted, ref } from "vue";
 import type { JSONSchema } from "../types/jsonSchema.ts";
 
@@ -145,7 +144,7 @@ export function useMonacoTheme() {
     });
   };
 
-  const configureJsonDefaults = (
+  const configureJsonDefaults = async (
     _monaco?: typeof Monaco,
     schema?: JSONSchema,
   ) => {
@@ -178,6 +177,7 @@ export function useMonacoTheme() {
           ],
     };
 
+    const MonacoModule = await import("monaco-editor");
     MonacoModule.json.jsonDefaults.setDiagnosticsOptions(diagnosticsOptions);
   };
 

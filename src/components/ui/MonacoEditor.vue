@@ -9,11 +9,16 @@
  * - `onDidChangeModelContent` emits are debounced via setTimeout.
  * - A `suppressChangeEvent` flag prevents re-entrant calls.
  *
+ * ─── LAZY LOADING ───
+ * Monaco is imported dynamically in `onMounted`, so it is never pulled into
+ * the bundle at the top level. Consumers who never render this component
+ * will never trigger the import.
+ *
  * Usage:
  *   <MonacoEditor v-model="jsonText" language="json" />
  */
 
-import * as monaco from "monaco-editor";
+import type * as MonacoNS from "monaco-editor";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useMonacoTheme } from "../../hooks/use-monaco-theme.ts";
 
@@ -40,14 +45,16 @@ const {
 
 // ── Intentionally NOT reactive ──
 // Using plain variables prevents Vue from tracking Monaco internals.
-let editorInstance: monaco.editor.IStandaloneCodeEditor | null = null;
+let editorInstance: MonacoNS.editor.IStandaloneCodeEditor | null = null;
 let suppressChangeEvent = false;
 let pendingRaf: number | null = null;
 let pendingEmit: ReturnType<typeof setTimeout> | null = null;
 let lastSetValue = "";
 
-onMounted(() => {
+onMounted(async () => {
   if (!editorContainer.value) return;
+
+  const monaco = await import("monaco-editor");
 
   defineMonacoThemes(monaco);
   configureJsonDefaults(monaco);
