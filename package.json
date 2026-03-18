@@ -16,7 +16,7 @@
   "private": false,
   "version": "0.4.6",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": ["*.css"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gcasotti/jsonschema-builder-vue.git"
@@ -29,26 +29,19 @@
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
-  "types": "./dist/jsonschema-builder-vue.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/jsonschema-builder-vue.d.ts",
-      "import": "./dist/index.js",
-      "module": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
-    "./styles.css": {
-      "import": "./dist/index.css",
-      "module": "./dist/index.css",
-      "default": "./dist/index.css"
-    }
+    "./styles.css": "./dist/index.css"
   },
   "scripts": {
-    "dev": "rsbuild dev",
-    "preview": "rsbuild preview",
-    "build": "rslib build",
-    "build:demo": "rsbuild build",
-    "build:dev": "rslib build --mode development",
+    "dev": "BUILD_MODE=demo vite",
+    "preview": "BUILD_MODE=demo vite preview",
+    "build": "vite build",
+    "build:demo": "BUILD_MODE=demo vite build",
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check .",
@@ -66,21 +59,22 @@
     "ajv-formats": "^3.0.1",
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.562.0",
-    "monaco-editor": "^0.55.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.0",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.0.17"
   },
   "peerDependencies": {
-    "vue": ">=3.4.0"
+    "vue": ">=3.4.0",
+    "monaco-editor": ">=0.44.0"
+  },
+  "peerDependenciesMeta": {
+    "monaco-editor": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
-    "@microsoft/api-extractor": "^7.52.11",
-    "@rsbuild/core": "^1.4.15",
-    "@rsbuild/plugin-vue": "^1.0.0",
-    "@rslib/core": "^0.19.0",
     "@tailwindcss/postcss": "^4.1.12",
     "@types/node": "^25.0.3",
     "@vitejs/plugin-vue": "^6.0.4",
@@ -91,6 +85,8 @@
     "tailwindcss": "^4.1.12",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",
+    "vite": "^6.4.1",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^4.0.18",
     "vue": "^3.5.0",
     "vue-router": "^4.5.0",

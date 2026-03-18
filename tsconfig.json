@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig-base.json",
-  "include": ["rslib.config.ts", "rsbuild.config.ts"],
+  "include": ["vite.config.ts"],
   "compilerOptions": {
     "outDir": "build/ts/root"
   },
